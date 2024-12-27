@@ -1,0 +1,1 @@
+from .footer import get_footer
