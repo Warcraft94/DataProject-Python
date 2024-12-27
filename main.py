@@ -1,13 +1,12 @@
 import plotly_express as px
-
 import dash
 import pandas
 import os
 import json
 from dash import dcc, html
 from dash.dependencies import Input, Output
-#from src.utils import clean_energy_data
-from src.components import get_footer
+from src.utils import clean_energy_data
+from src.components import get_footer, get_header
 
 #
 # Data
@@ -17,16 +16,24 @@ current_dir = os.path.dirname(__file__)  # Directory of the current script
 
 year = 2002
 
-gapminder = px.data.gapminder() # (1)
-years = gapminder["year"].unique()
-data = { year:gapminder.query("year == @year") for year in years} # (2)
+data_path = os.path.join(current_dir, "data/cleaned/formatted_energy.csv")
+pop_data = pandas.read_csv(data_path, sep=';')
+
+years = pop_data["Year"].unique()
+data = { year:pop_data.query("Year == @year") for year in years}
+
+#gapminder = px.data.gapminder() # (1)
+#years = gapminder["year"].unique()
+#data = { year:gapminder.query("year == @year") for year in years} # (2)
+
+
 
 #
 # nos données
 #
 # Lecture/stockage des données INSEE dans une data frame Pandas
-data_path = os.path.join(current_dir, "data/cleaned/formatted_energy.csv")
-pop_data = pandas.read_csv(data_path, sep=';')
+#data_path = os.path.join(current_dir, "data/cleaned/formatted_energy.csv")
+#pop_data = pandas.read_csv(data_path, sep=';')
 
 # Récupération de la colonne 'Code Département' contenant les codes INSEE des communes
 countries_code = pop_data['Country']
@@ -61,10 +68,10 @@ if __name__ == '__main__':
 
     app = dash.Dash(__name__) # (3)
 
-    fig = px.scatter(data[year], x="gdpPercap", y="lifeExp",
-                        color="continent",
-                        size="pop",
-                        hover_name="country") # (4)
+    fig = px.scatter(data[year], x="Energy_consumption", y="Energy_production",
+                        color="Country",
+                        size="Year",
+                        hover_name="Country") # (4)
     
     fig_map = px.choropleth_mapbox(
         df,
@@ -81,6 +88,8 @@ if __name__ == '__main__':
 
 
     app.layout = html.Div([
+        get_header(),
+
         # Title
         html.H1(
             id="title",
@@ -123,7 +132,7 @@ if __name__ == '__main__':
             n_intervals=0,
             disabled=True  # Initially disabled
         )
-    ])
+    ],  style={'backgroundColor': '#212121', 'color': '#FFFFFF'})
 
     # Callback for interactivity
     @app.callback(
@@ -137,13 +146,12 @@ if __name__ == '__main__':
         Update the graph, title, and legend dynamically based on the selected year.
         """
         # Update the graph
-        fig = px.scatter(
-            data[selected_year],
-            x="gdpPercap",
-            y="lifeExp",
-            color="continent",
-            size="pop",
-            hover_name="country",
+        fig = px.scatter(data[selected_year], 
+            x="Energy_consumption", 
+            y="Energy_production",
+            color="Country",
+            size="Year",
+            hover_name="Country",
             title=f"Life Expectancy vs GDP per Capita ({selected_year})"
         )
 
