@@ -1,12 +1,16 @@
 from dash import html
 
 def get_footer():
-  """Returns the footer component."""
-  return html.Footer(
-      id="footer",
-      children=[
-          html.P("Test"),
-          html.A("Aller vers test", href="/test"),
-      ],
-      style={"textAlign": "center", "backgroundColor": "#AAAAAA", "padding": "10px"},
-  )
+
+    return html.Footer(
+        children=[
+            html.Div([
+                "© 2024 Poulain Kyrian & Fauconnier Aurélien, tous droits réservés.",
+                html.Br(),
+                "Fait en utilisant Dash et Plotly",
+            ]),
+            html.Div([
+                html.A("Github du projet", href="https://github.com/Warcraft94/DataProject-Python")
+            ])
+        ]
+    )

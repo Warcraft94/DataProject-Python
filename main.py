@@ -11,7 +11,6 @@ from src.components import get_footer, get_header
 #
 # Data
 #
-
 current_dir = os.path.dirname(__file__)  # Directory of the current script
 
 year = 2002
@@ -22,19 +21,9 @@ pop_data = pandas.read_csv(data_path, sep=';')
 years = pop_data["Year"].unique()
 data = { year:pop_data.query("Year == @year") for year in years}
 
-#gapminder = px.data.gapminder() # (1)
-#years = gapminder["year"].unique()
-#data = { year:gapminder.query("year == @year") for year in years} # (2)
-
-
-
 #
 # nos données
 #
-# Lecture/stockage des données INSEE dans une data frame Pandas
-#data_path = os.path.join(current_dir, "data/cleaned/formatted_energy.csv")
-#pop_data = pandas.read_csv(data_path, sep=';')
-
 # Récupération de la colonne 'Code Département' contenant les codes INSEE des communes
 countries_code = pop_data['Country']
 
@@ -62,7 +51,6 @@ with open(geojson_path, "r") as f:
 #
 # Main
 #
-
 if __name__ == '__main__':
     #clean_energy_data()
 
