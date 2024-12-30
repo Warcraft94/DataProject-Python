@@ -1,7 +1,7 @@
 from dash import html, dcc
 
 def get_header():
-    return html.Header(
+    return html.Div(
         id="header",
         children=[
             html.Div(
@@ -20,10 +20,10 @@ def get_header():
                 children=[
                     dcc.Slider(
                         1960,
-                        2020,
-                        step=1,
-                        value=2010,
-                        marks={year: str(year) for year in range(1960, 2021)},
+                        2010,
+                        step=2,
+                        value=1986,
+                        marks={year: str(year) for year in range(1960, 2011)},
                         id='year-slider'
                     )
                 ]

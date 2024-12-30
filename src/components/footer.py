@@ -2,7 +2,8 @@ from dash import html
 
 def get_footer():
 
-    return html.Footer(
+    return html.Div(
+        id="footer",
         children=[
             html.Div([
                 "© 2024 Poulain Kyrian & Fauconnier Aurélien, tous droits réservés.",
