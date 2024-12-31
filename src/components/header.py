@@ -15,6 +15,7 @@ def get_header(years):
                     )
                 ]
             ),
+            html.Hr(),
             html.Div(
                 id="header-slider",
                 children=[

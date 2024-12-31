@@ -3,6 +3,7 @@
     --secondary-color: #1f2937;
     --tertiary-color: #0f141b;
     --quaternary-color: #135836;
+    --quinary-color: #4b5563;
     --text-color: #ffffff;
 }
 
@@ -12,6 +13,11 @@ body {
     background-color: var(--primary-color);
     color: var(--text-color);
     font-family: Arial, sans-serif;
+}
+
+hr {
+    border: 1px solid var(--tertiary-color);
+    width: 100%;
 }
 
 #header {
@@ -33,12 +39,20 @@ body {
     margin: 0;
 }
 
-#country-dropdown {
-    width: 300px;
+#country-dropdown .Select-control {
+    background-color: var(--quaternary-color) !important;
+    border-color: var(--tertiary-color) !important;
+    color: var(--text-color) !important;
+    width: 300px !important;
+}
+
+#country-dropdown .Select-menu-outer {
+    background-color: var(--quaternary-color) !important;
+    border-color: var(--tertiary-color) !important;
+    color: var(--text-color) !important;
 }
 
 #header-slider {
-    margin-top: 20px;
     width: 100%;
 }
 
