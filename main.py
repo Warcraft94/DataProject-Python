@@ -54,12 +54,13 @@ with open(geojson_path, "r") as f:
 if __name__ == '__main__':
     #clean_energy_data()
 
-    app = dash.Dash(__name__) # (3)
+    app = dash.Dash(__name__)
+    app.title = "CO²Map"
 
     fig = px.scatter(data[year], x="Energy_consumption", y="Energy_production",
                         color="Country",
                         size="Year",
-                        hover_name="Country") # (4)
+                        hover_name="Country")
     
     fig_map = px.choropleth_mapbox(
         df,
@@ -140,5 +141,4 @@ if __name__ == '__main__':
     #
     # RUN APP
     #
-
-    app.run_server(debug=True) # (8)
+    app.run_server(debug=True)
