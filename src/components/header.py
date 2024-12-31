@@ -1,6 +1,6 @@
 from dash import html, dcc
 
-def get_header(years):
+def create_header(years):
     return html.Div(
         id="header",
         children=[

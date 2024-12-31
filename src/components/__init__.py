@@ -1,2 +1,2 @@
-from .footer import get_footer
-from .header import get_header
+from .footer import create_footer
+from .header import create_header

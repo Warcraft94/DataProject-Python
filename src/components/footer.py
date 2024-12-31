@@ -1,6 +1,6 @@
 from dash import html
 
-def get_footer():
+def create_footer():
 
     return html.Div(
         id="footer",

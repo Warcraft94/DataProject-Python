@@ -6,7 +6,7 @@ import json
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from src.utils import clean_energy_data
-from src.components import get_footer, get_header
+from src.pages import create_home_page
 
 #
 # Data
@@ -57,57 +57,12 @@ if __name__ == '__main__':
     app = dash.Dash(__name__)
     app.title = "CO²Map"
 
-    fig = px.scatter(data[year], x="Energy_consumption", y="Energy_production",
-                        color="Country",
-                        size="Year",
-                        hover_name="Country")
-    
-    fig_map = px.choropleth_mapbox(
-        df,
-        geojson=geojson_data,                           # GeoJSON file
-        color="CO2_emission",                      # Column to determine color
-        locations="ADMIN",                         # Column in DataFrame with location names
-        featureidkey="properties.ADMIN",           # Key in GeoJSON to match `ADMIN`
-        color_continuous_scale="YlGn",             # Color scale
-        range_color=[0, 15000],                    # Min and max of color scale
-        mapbox_style="carto-positron",             # Map style
-        zoom=2,                                    # Initial zoom level
-        center={"lat": 0, "lon": 0},               # Center of the map
-    )
-
-
-    app.layout = html.Div([
-        get_header(years),
-
-        # Title
-        html.H1(
-            id="title",
-            style={'textAlign': 'center', 'color': '#7FDBFF'}
-        ),
-
-        # Graphs
-        dcc.Graph(
-            id='graph1'
-        ),
-
-        # Legend
-        html.Div(
-            id="legend",
-            style={'marginTop': '20px'}
-        ),
-
-        # Graphs
-        dcc.Graph(
-            id='graph2',
-            figure=fig_map
-        ),
-
-        get_footer(),
-    ])
+    app.layout = create_home_page(years, data, df, geojson_data, year)
 
     # Callback for interactivity
     @app.callback(
         [Output('graph1', 'figure'),  # Graph
+        Output('graph2', 'figure'),     #Graph2
         Output('title', 'children'),  # Title
         Output('legend', 'children')],  # Legend
         [Input('year-slider', 'value')]  # Dropdown input
@@ -126,6 +81,19 @@ if __name__ == '__main__':
             title=f"Life Expectancy vs GDP per Capita ({selected_year})"
         )
 
+        fig_map = px.choropleth_mapbox(
+            df,
+            geojson=geojson_data,                           # GeoJSON file
+            color="CO2_emission",                      # Column to determine color
+            locations="ADMIN",                         # Column in DataFrame with location names
+            featureidkey="properties.ADMIN",           # Key in GeoJSON to match `ADMIN`
+            color_continuous_scale="YlGn",             # Color scale
+            range_color=[0, 15000],                    # Min and max of color scale
+            mapbox_style="carto-positron",             # Map style
+            zoom=2,                                    # Initial zoom level
+            center={"lat": 0, "lon": 0},               # Center of the map
+        )
+
         # Update the title
         title = f"Life Expectancy vs GDP per Capita ({selected_year})"
 
@@ -136,7 +104,7 @@ if __name__ == '__main__':
         Hover over the points for more details.
         """
 
-        return fig, title, legend
+        return fig, fig_map, title, legend
     
     #
     # RUN APP
