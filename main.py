@@ -76,7 +76,7 @@ if __name__ == '__main__':
 
 
     app.layout = html.Div([
-        get_header(),
+        get_header(years),
 
         # Title
         html.H1(
@@ -84,19 +84,9 @@ if __name__ == '__main__':
             style={'textAlign': 'center', 'color': '#7FDBFF'}
         ),
 
-        html.Button('Start/Stop', id='start-stop-button'),
-
         # Graphs
         dcc.Graph(
             id='graph1'
-        ),
-        dcc.Slider(
-            years.min(),
-            years.max(),
-            step=None,
-            value=years.min(),
-            marks={str(year): str(year) for year in years},
-            id='year-slider'
         ),
 
         # Legend
@@ -112,15 +102,7 @@ if __name__ == '__main__':
         ),
 
         get_footer(),
-
-
-        dcc.Interval(
-            id='animation-interval',
-            interval=1*1000,  # Adjust interval for animation speed
-            n_intervals=0,
-            disabled=True  # Initially disabled
-        )
-    ],  style={'backgroundColor': '#212121', 'color': '#FFFFFF'})
+    ])
 
     # Callback for interactivity
     @app.callback(
