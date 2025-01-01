@@ -1,7 +1,7 @@
 from dash import html, dcc
 
 def create_header(years):
-    return html.Div(
+    return html.Header(
         id="header",
         children=[
             html.Div(

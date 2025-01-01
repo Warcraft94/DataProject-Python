@@ -2,7 +2,7 @@ from dash import html
 
 def create_footer():
 
-    return html.Div(
+    return html.Footer(
         id="footer",
         children=[
             html.Div([
