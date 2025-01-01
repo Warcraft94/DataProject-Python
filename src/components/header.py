@@ -8,6 +8,7 @@ def create_header(years):
                 id="header-row",
                 children=[
                     html.H2("CO²Map", id="website-name"),
+                    # Dropdown pour choisir l'année
                     dcc.Dropdown(
                         id="country-dropdown",
                         options=[{"label": str(country), "value": country} for country in {"France", "Germany", "United States"}],
@@ -23,7 +24,7 @@ def create_header(years):
                         years.min(),
                         years.max(),
                         step=None,
-                        value=years.min(),
+                        value=years.max(),
                         marks={str(year): str(year) for year in years},
                         id='year-slider'
                     )

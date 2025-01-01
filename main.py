@@ -1,25 +1,24 @@
 import plotly_express as px
 import dash
-import pandas
+import pandas as pd
 import os
 import json
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from src.utils import clean_geojson
 from src.pages import create_home_page
+from src.components import SimpleDashboard
 
 #
 # Data
 #
-current_dir = os.path.dirname(__file__)  # Directory of the current script
-
+"""
 year = 2002
 
-data_path = os.path.join(current_dir, "data/cleaned/formatted_energy.csv")
-pop_data = pandas.read_csv(data_path, sep=';')
-
 years = pop_data["Year"].unique()
-data = { year:pop_data.query("Year == @year") for year in years}
+data = {year:pop_data.query("Year == @year") for year in years}
+
+print(years)
 
 #
 # nos données
@@ -41,72 +40,42 @@ pop_data['ADMIN'] = pop_data.pop('Country')
 pop_data["CO2_emission"] = pandas.to_numeric(pop_data["CO2_emission"])
 
 df = pop_data
+"""
 
-# Construct the path relative to the script's location
+def load_data():
+    """Récupère les fichiers de données
 
-geojson_path = os.path.join(current_dir, "data/cleaned/cleaned_countries.geojson")
-with open(geojson_path, "r") as f:
-    geojson_data = json.load(f)
+    Returns:
+        pd.Dataframe: Dataframe des données d'énergies et d'émissions de CO2 par pays
+        dict: Dictionnaire geojson des pays
+    """
+    # Récupère le chemin absolu du répertoire où le script s'exécute
+    current_dir = os.path.dirname(__file__) 
+    
+    # Construit le chemin d'accès au fichier geojson
+    geojson_path = os.path.join(current_dir, "data/cleaned/cleaned_countries.geojson")
+    # Récupère le fichier geojson sous forme de dict()
+    with open(geojson_path, "r") as f:
+        geojson_data = json.load(f)
+        
+    # Construit le chemin d'accès au fichier csv
+    data_path = os.path.join(current_dir, "data/cleaned/formatted_energy.csv")
+    energy_data = pd.read_csv(data_path, sep=';')
+    
+    energy_data["CO2_emission"] = pd.to_numeric(energy_data["CO2_emission"])
+    energy_data["Energy_consumption"] = pd.to_numeric(energy_data["CO2_emission"])
+    energy_data["Energy_production"] = pd.to_numeric(energy_data["CO2_emission"])
+    
+    return energy_data, geojson_data
 
 #
 # Main
 #
 if __name__ == '__main__':
-    #clean_geojson()
-
-    app = dash.Dash(__name__)
-    app.title = "CO²Map"
-
-    app.layout = create_home_page(years, data, df, geojson_data, year)
-
-    # Callback for interactivity
-    @app.callback(
-        [Output('graph1', 'figure'),  # Graph
-        Output('graph2', 'figure'),     #Graph2
-        Output('title', 'children'),  # Title
-        Output('legend', 'children')],  # Legend
-        [Input('year-slider', 'value')]  # Dropdown input
-    )
-    def update_dashboard(selected_year):
-        """
-        Update the graph, title, and legend dynamically based on the selected year.
-        """
-        # Update the graph
-        fig = px.scatter(data[selected_year], 
-            x="Energy_consumption", 
-            y="Energy_production",
-            color="Country",
-            size="Year",
-            hover_name="Country",
-            title=f"Life Expectancy vs GDP per Capita ({selected_year})"
-        )
-
-        fig_map = px.choropleth_mapbox(
-            df,
-            geojson=geojson_data,                           # GeoJSON file
-            color="CO2_emission",                      # Column to determine color
-            locations="ADMIN",                         # Column in DataFrame with location names
-            featureidkey="properties.ADMIN",           # Key in GeoJSON to match `ADMIN`
-            color_continuous_scale="YlGn",             # Color scale
-            range_color=[0, 15000],                    # Min and max of color scale
-            mapbox_style="carto-positron",             # Map style
-            zoom=2,                                    # Initial zoom level
-            center={"lat": 0, "lon": 0},               # Center of the map
-        )
-
-        # Update the title
-        title = f"Life Expectancy vs GDP per Capita ({selected_year})"
-
-        # Update the legend
-        legend = f"""
-        The graph above shows the relationship between life expectancy and GDP per capita for the year {selected_year}. 
-        Each continent is represented by a color, and the size of the symbols is proportional to the population of each country. 
-        Hover over the points for more details.
-        """
-
-        return fig, fig_map, title, legend
+    # Récupère les données
+    energy_data, geojson_data = load_data()    
+    # Créer l'instance de la classe SimpleDashboard
+    dashboard = SimpleDashboard(energy_data, geojson_data)
+    # Lance l'application web dash
+    dashboard.run()
     
-    #
-    # RUN APP
-    #
-    app.run_server(debug=True)

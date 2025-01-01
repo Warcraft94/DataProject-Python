@@ -29,7 +29,7 @@ def clean_geojson():
 
 
     l = []
-    # Sélection des données d'Ile de France
+    # Sélection des données d'Île de France
     for country in countries["ADMIN"]:
         if country != "World":
             

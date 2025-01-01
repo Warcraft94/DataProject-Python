@@ -4,14 +4,16 @@ from src.components import create_footer, create_header
 #from simple_page import create_default_layout
 
 def create_home_page(years, data, df, geojson_data, year): #TODO: variables en parametres
+    # Graphique en nuages de points de l'énergie consumé par rapport à la production d'énergie de chaque pays
     fig = px.scatter(data[year], x="Energy_consumption", y="Energy_production",
                         color="Country",
                         size="Year",
                         hover_name="Country")
     
+    # Graphique carte du monde coloré par pays selon leurs émissions de CO2 chaque année
     fig_map = px.choropleth_mapbox(
             df,
-            geojson=geojson_data,                           # GeoJSON file
+            geojson=geojson_data,                      # GeoJSON file
             color="CO2_emission",                      # Column to determine color
             locations="ADMIN",                         # Column in DataFrame with location names
             featureidkey="properties.ADMIN",           # Key in GeoJSON to match `ADMIN`
