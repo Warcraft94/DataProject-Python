@@ -1,1 +1,1 @@
-from .clean_data import clean_energy_data
+from .clean_data import clean_geojson

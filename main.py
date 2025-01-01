@@ -5,7 +5,7 @@ import os
 import json
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from src.utils import clean_energy_data
+from src.utils import clean_geojson
 from src.pages import create_home_page
 
 #
@@ -52,7 +52,7 @@ with open(geojson_path, "r") as f:
 # Main
 #
 if __name__ == '__main__':
-    #clean_energy_data()
+    #clean_geojson()
 
     app = dash.Dash(__name__)
     app.title = "CO²Map"

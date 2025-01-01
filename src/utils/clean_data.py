@@ -2,7 +2,7 @@ import geojson, geopandas, pandas
 import os
 
 
-def clean_energy_data():
+def clean_geojson():
 
     source_name = "countries.geojson"
     target_name = "cleaned_countries.geojson"
