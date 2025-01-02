@@ -3,14 +3,13 @@ import pandas as pd
 from functools import wraps
 
 class DataObject:
-    """
-    Classe chargé de la gestion des données (coupe, trie, sépare les données, ..)
+    """Classe chargé de la gestion des données (coupe, trie, sépare les données, ..)
     """
     def __init__(self, energy_data: pd.DataFrame, years: list):
         """Constructeur de la classe DataObject
 
         Args:
-            energy_data (list): Tableau des énergies produites, consommés et de l'émission de CO2 par pays et par année
+            energy_data (list): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
             years (list): Plage d'années présente dans le tableau des énergies
         """
         # Créé un dictionnaire avec pour clé les années et pour valeur les lignes où la colonne Year correspond à la clé
@@ -30,33 +29,27 @@ class DataObject:
         self.year = year
         return self.energy_data[self.year]
     
-    def get_data_columns(self, *args: str):
+    def get_data_columns(self, *columns: str):
         """Retourne les colonnes en paramètres du Dataframe self.energy_data
 
         Returns:
             pd.Dataframe: contient les colonnes du Dataframe self.energy_data en paramètres
         """
-        return self.energy_data[self.year][list(args)]
+        return self.energy_data[self.year][list(columns)]
     
-    def filters_on_data_per_country(func):
+    def filters_get_data_columns(func):
         @wraps(func) # Permet de conserver le nom de la fonction d'origine, sa docstring, ..
-        def wrapper(country: str, emission_type_filter: bool = False, energy_filter: bool = False):
+        def wrapper(self, country: str, *columns: str):
             # Appelle la fonction get_data_per_country
-            tab = func(country)
-            # Si on récupère uniquement les données des types d'émissions de CO2
-            if emission_type_filter:
-                # TODO : filtre des données des types d'émissions de CO2
-                # return tab.drop(columns=['Other'])
-                return tab[['Energy_type', 'CO2_emission']]
-            # Si on récupère uniquement les données de production et consommation d'énergie
-            elif energy_filter:
-                # TODO : filtre des données d'énergie (production et consommation)
-                return tab[['Energy_consumption', 'Energy_production']]
+            result = func(self, country)
+            # Si on ne récupère que des colonnes spécifiques
+            if columns:
+                return result[list(columns)]
             return result
         return wrapper
     
-    @filters_on_data_per_country
-    def get_data_per_country(country: str):
+    @filters_get_data_columns
+    def get_data_per_country(self, country: str):
         """Renvoi les lignes du Dataframe self.energy_data correspondant au pays en paramètre
 
         Args:
@@ -65,7 +58,7 @@ class DataObject:
         Returns:
             pd.Dataframe: contient les données (emissions CO2, production d'énergie, consommation d'énergie, ..) pour le pays sélectionné
         """
-        return energy_data[self.year][energy_data[self.year]['Country'] == country]
+        return self.energy_data[self.year][self.energy_data[self.year]['Country'] == country]
     
     @staticmethod
     def get_mask(col: pd.DataFrame, mask: str):

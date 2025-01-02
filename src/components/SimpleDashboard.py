@@ -9,11 +9,16 @@ from .footer import create_footer
 from .header import create_header
 
 class SimpleDashboard:
+    """Classe chargé de générer le Dashboard 
     """
-    Classe chargé de générer le Dashboard 
-    """
+    
     def __init__(self, energy_data: pd.DataFrame, geojson_data: dict):
-        
+        """Constructeur de la classe SimpleDashboard
+
+        Args:
+            energy_data (pd.DataFrame): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
+            geojson_data (dict): contient les données de localisation géographique des pays
+        """
         # Récupère toutes les années uniques dans le tableau energy_data
         years = energy_data["Year"].unique()
         # DataObject contenant les différents tableaux de données utilisés pour les graphiques
@@ -34,13 +39,14 @@ class SimpleDashboard:
         self.setup_callbacks()
         
     def create_layout(self):
+        """Crée le layout du site avec la disposition des différents composants
         """
-        Crée le layout du site avec la disposition des différents composants
-        """
+        
         # TODO : Tabulations/Onglets à faire
         
         fig1 = self.create_scatter_plot(self.year)
-        fig2 = self.create_choropleth_map(self.year)
+        fig2 = self.create_pie_plot(self.year)
+        fig3 = self.create_choropleth_map(self.year)
         
         return html.Div([
             create_header(self.years),
@@ -63,29 +69,36 @@ class SimpleDashboard:
                 style={'marginTop': '20px'}
             ),
 
-            # Carte choroplète (Emission de CO2 par pays)
+            # Graphique circulaires (Emission de CO2 par type d'énergie)
             dcc.Graph(
                 id='graph2',
-                figure=fig2    
+                figure=fig2
+            ),
+            
+            # Carte choroplète (Emission de CO2 par pays)
+            dcc.Graph(
+                id='graph3',
+                figure=fig3
             ),
             
             create_footer(),
         ])
     
     def setup_callbacks(self):
+        """Configure les callbacks pour update les graphiques en fonction des entrées
         """
-        Configure les callbacks pour update les graphiques en fonction des entrées
-        """
+        
         @self.app.callback(
-            [Output('graph1', 'figure'), Output('graph2', 'figure')],
+            [Output('graph1', 'figure'), Output('graph2', 'figure'), Output('graph3', 'figure')],
             [Input('year-slider', 'value')]
         )
         # Update tous les graphiques à chaque changement d'année
         def update_graphs(selected_year):
             self.data.change_data_for_year(selected_year)
             fig1 = self.create_scatter_plot(selected_year)
-            fig2 = self.create_choropleth_map(selected_year)
-            return fig1, fig2
+            fig2 = self.create_pie_plot(selected_year)
+            fig3 = self.create_choropleth_map(selected_year)
+            return fig1, fig2, fig3
         
         # Modèles pour update le graphique 1 et le graphique 2 séparément
         """
@@ -104,60 +117,109 @@ class SimpleDashboard:
         """
         #def update_graph2()
         
-    def create_scatter_plot(self, selected_year):
+    def create_scatter_plot(self, selected_year: int):
+        """Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
+
+        Args:
+            selected_year (int): année sélectionné
+
+        Returns:
+            px.graph_objects.Figure: graphique en nuage de points
         """
-        Crée un graphique en nuage de points comparant l'énergie consommé à l'émission de CO2 de chaque pays, par rapport à l'année sélectionnée
+        
+        # Récupère les colonnes spécifiés en paramètres du Dataframe data
+        df = self.data.get_data_columns('Country', 'Energy_consumption', 'Energy_production', 'CO2_emission', 'Energy_type', 'Year')
+        
+        # Création d'un masque pour ne pas récupérer l'instance "World"
+        mask = self.data.get_mask(df['Country'], 'World')
+        df = df[~mask] # Enlève l'instance "World" du Dataframe
+        
+        # Création d'un masque pour ne récupérer que le type "all_energy_types"
+        mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
+        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe
+        
+        # Crée un graphique de nuages de points
+        fig = px.scatter(
+            df, 
+            x="Energy_consumption", 
+            y="CO2_emission", 
+            color="Country", 
+            size="Year", 
+            hover_name="Country",
+            title="Emissions de CO2 par rapport à la consommation d'énergie par pays"   # Le titre de la figure
+        )
+        
+        return fig
+    
+    def create_pie_plot(self, selected_year: int):
+        """Crée un graphique circulaire (camembert) représentant le % d'émissions de CO2 pour chaque type d'énergie dans le Monde pour l'année sélectionnée
+
+        Args:
+            selected_year (int): année sélectionné
+
+        Returns:
+            px.graph_objects.Figure: graphique circulaire
         """
-        #df = self.data_object.get_data_for_year(selected_year)
-        df = self.data.get_data_columns('Country', 'Energy_consumption', 'Energy_production', 'CO2_emission', 'Year')
-        fig = px.scatter(df, x="Energy_consumption", y="CO2_emission", 
-                         color="Country", size="Year", hover_name="Country")
+        
+        # Récupère les colonnes spécifiés en paramètres du Dataframe data
+        df = self.data.get_data_per_country('World', 'Energy_type', 'CO2_emission')   
+        
+        # Création d'un masque pour ne pas récupérer l'instance "all_energy_types"
+        mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
+        df = df[~mask] # Enlève l'instance "all_energy_types" du Dataframe
+        
+        # Crée un graphique circulaire (camembert)
+        fig = px.pie(
+            df,
+            names = "Energy_type",
+            values = "CO2_emission",
+            labels = "Energy_type",
+            color_discrete_sequence=['red', 'blue', 'green', 'orange'],
+            title="Emissions de CO2 par énergie",                           # Le titre de la figure
+            #hovertemplate = "%{label}: <br>Popularity: %{percent} </br> %{text}"
+        )
+        
         return fig
 
-    def create_choropleth_map(self, selected_year):
+    def create_choropleth_map(self, selected_year: int):
+        """Crée une carte choroplète des émissions de CO2 pour chaque pays, pour l'année sélectionnée
+
+        Args:
+            selected_year (int): année sélectionné
+
+        Returns:
+            px.graph_objects.Figure: figure choropleth
         """
-        Crée une carte choroplète des émissions de CO2 pour chaque pays par rapport à l'année sélectionnée
-        """
-        #df = self.data_object.get_data_for_year(selected_year)
+        
+        # Récupère les colonnes spécifiés en paramètres du Dataframe data
         df = self.data.get_data_columns('Country', 'CO2_emission', 'Energy_type')
         
-        # Récupération de la colonne 'Country' contenant les pays
-        countries_col = df['Country']
-        # Création d'un masque pour ne pas récupérer l'instance World
-        mask_countries = self.data.get_mask(countries_col, 'World')
-        df = df[~mask_countries] # Enlève l'instance World du Dataframe
+        # Création d'un masque pour ne pas récupérer l'instance "World"
+        mask = self.data.get_mask(df['Country'], 'World')
+        df = df[~mask] # Enlève l'instance "World" du Dataframe
         
-        # Récupération de la colonne 'Energy_type' contenant les types d'énergies
-        energy_type_col = df['Energy_type']
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
-        mask_energy_type = self.data.get_mask(energy_type_col, 'all_energy_type')
-        df = df[mask_energy_type] # Garde que l'instance de all_energy_type pour chaque pays du Dataframe
+        mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
+        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe
         
-        # Créé un choroplète avec le GeoJSON et les données
-        fig = px.choropleth(df, 
-                            locations="Country",  # Les pays dans le DataFrame
-                            color="CO2_emission",  # Les valeurs des émissions de CO2
-                            geojson=self.geojson_data,  # Fichier Geojson
-                            featureidkey="properties.ADMIN",  # Clé correspondante dans le GeoJSON (propriété "ADMIN")
-                            locationmode="geojson-id",
-                            hover_name="Country",  # Affiche le nom du pays lors du survol
-                            color_continuous_scale="Viridis",  # Palette de couleurs
-                            title="Emissions de CO2 par pays")
-
-        # Met à jour la carte pour avoir les contours du GeoJSON
-        fig.update_geos(
-            visible=True, 
-            showcoastlines=True, 
-            coastlinecolor="Black",  # Couleur des côtes
-            showland=True, 
-            landcolor="lightgray",  # Couleur des terres
-            projection_type="mercator"  # Type de projection
+        fig = px.choropleth_mapbox(
+            df,
+            geojson=self.geojson_data,                      # GeoJSON file
+            color="CO2_emission",                           # Colonne du Dataframe qui détermine la variation de couleur par rapport aux valeurs
+            locations="Country",                            # Colonne du Dataframe qui détermine le pays
+            featureidkey="properties.ADMIN",                # Clé du GeoJson pour trouver le pays associé
+            color_continuous_scale="YlGn",                  # Echelle de couleur
+            range_color=[0, 15000],                         # Min et max de l'échelle de couleur
+            mapbox_style="carto-positron",                  # Style de la Map
+            zoom=2,                                         # Zoom initial sur la Map
+            center={"lat": 0, "lon": 0},                    # Centre de la Map
+            title="Carte des émissions de CO2 par pays",    # Le titre de la figure
         )
         
         return fig
 
     def run(self):
+        """Lance l'application Dash
         """
-        Lance l'application Dash
-        """
+        
         self.app.run_server(debug=True)
