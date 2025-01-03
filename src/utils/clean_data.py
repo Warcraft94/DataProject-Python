@@ -29,24 +29,19 @@ def clean_geojson():
 
 
     l = []
-    # Sélection des données d'Île de France
+    
     for country in countries["ADMIN"]:
         if country != "World":
             
-            
-            # Add it to the list
             countrySelected = countries[countries["ADMIN"].str.startswith(country)]
             
-            # Remplacer les noms de pays si nécessaire en utilisant le dictionnaire
             if countrySelected["ADMIN"].iloc[0] in mappingNameCountries:
                 countrySelected["ADMIN"] = countrySelected["ADMIN"].replace(
                     mappingNameCountries
                 )
 
             l.append(countrySelected)
-    
-    
-    # Construction de la GeoDataFrame correspondante
+
     c = pandas.concat(l)
     
     # Ecriture dans un fichier
