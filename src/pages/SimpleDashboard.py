@@ -1,4 +1,5 @@
 import plotly_express as px
+import plotly.graph_objects as go
 import pandas as pd
 from dash import dcc, html
 from dash.dependencies import Input, Output
@@ -24,7 +25,6 @@ class SimpleDashboard:
         self.data = DataObject(energy_data, years)
         self.geojson_data = geojson_data
         self.years = years
-        
         # Année sélectionné pour l'affichage des graphiques, par défaut on prend la première année de la plage
         self.year = years[len(years)-1]
         
@@ -32,11 +32,10 @@ class SimpleDashboard:
         """Crée le layout du site avec la disposition des différents composants
         """
         
-        # TODO : Tabulations/Onglets à faire
-        
         fig1 = self.create_scatter_plot(self.year)
         fig2 = self.create_pie_plot(self.year)
-        fig3 = self.create_choropleth_map(self.year)
+        fig3 = self.create_histogram_plot()
+        fig4 = self.create_choropleth_map(self.year)
         
         return html.Div(id="main-container", children=[
             create_header(self.years),
@@ -62,11 +61,18 @@ class SimpleDashboard:
                         figure=fig2
                     ),
                 ]),
-                dcc.Tab(label='Carte choroplète', value='tab3', className="custom-tab", selected_className='custom-tab--selected', children=[
-                    # Carte choroplète (Emission de CO2 par pays)
+                dcc.Tab(label='Histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected', children=[
+                    # Graphique histogramme (Evolution emission CO2 par rapport à la Population)
                     dcc.Graph(
                         id='graph3',
                         figure=fig3
+                    ),
+                ]),
+                dcc.Tab(label='Carte choroplète', value='tab4', className="custom-tab", selected_className='custom-tab--selected', children=[
+                    # Carte choroplète (Emission de CO2 par pays)
+                    dcc.Graph(
+                        id='graph4',
+                        figure=fig4
                     ),
                 ]),
             ]),
@@ -79,29 +85,29 @@ class SimpleDashboard:
         """
         
         @app.callback(
-            [Output('graph1', 'figure'), Output('graph2', 'figure'), Output('graph3', 'figure')],
+            [Output('graph1', 'figure'), Output('graph2', 'figure'), Output('graph3', 'figure'), Output('graph4', 'figure')],
             [Input('year-slider', 'value')]
         )
-        # Update tous les graphiques à chaque changement d'année
-        def update_graphs(selected_year):
-            self.data.change_data_for_year(selected_year)
+        # Met à jour tous les graphiques à chaque changement d'année
+        def update_graphs(selected_year: int):
             fig1 = self.create_scatter_plot(selected_year)
             fig2 = self.create_pie_plot(selected_year)
-            fig3 = self.create_choropleth_map(selected_year)
-            return fig1, fig2, fig3
+            fig3 = self.create_histogram_plot()
+            fig4 = self.create_choropleth_map(selected_year)
+            return fig1, fig2, fig3, fig4
         
     def create_scatter_plot(self, selected_year: int):
         """Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
 
         Args:
-            selected_year (int): année sélectionné
+            selected_year (int): Année sélectionnée
 
         Returns:
             px.graph_objects.Figure: graphique en nuage de points
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
-        df = self.data.get_data_columns('Country', 'Energy_consumption', 'Energy_production', 'CO2_emission', 'Energy_type', 'Year')
+        df = self.data.get_data('Country', 'Energy_consumption', 'Energy_production', 'CO2_emission', 'Energy_type', 'Year', year=selected_year)
         
         # Création d'un masque pour ne pas récupérer l'instance "World"
         mask = self.data.get_mask(df['Country'], 'World')
@@ -119,7 +125,7 @@ class SimpleDashboard:
             color="Country", 
             size="Year", 
             hover_name="Country",
-            title="Emissions de CO2 par rapport à la consommation d'énergie par pays"   # Le titre de la figure
+            title="Emissions de CO2 par rapport à la consommation d'énergie par pays"   # Titre de la figure
         )
         
         return fig
@@ -128,14 +134,14 @@ class SimpleDashboard:
         """Crée un graphique circulaire (camembert) représentant le % d'émissions de CO2 pour chaque type d'énergie dans le Monde pour l'année sélectionnée
 
         Args:
-            selected_year (int): année sélectionné
+            selected_year (int): Année sélectionnée
 
         Returns:
             px.graph_objects.Figure: graphique circulaire
         """
         
-        # Récupère les colonnes spécifiés en paramètres du Dataframe data
-        df = self.data.get_data_per_country('World', 'Energy_type', 'CO2_emission')   
+        # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
+        df = self.data.get_data_per_country('World', 'Energy_type', 'CO2_emission', year=selected_year)   
         
         # Création d'un masque pour ne pas récupérer l'instance "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
@@ -148,8 +154,67 @@ class SimpleDashboard:
             values = "CO2_emission",
             labels = "Energy_type",
             color_discrete_sequence=['red', 'blue', 'green', 'orange'],
-            title="Emissions de CO2 par énergie",                           # Le titre de la figure
+            title="Emissions de CO2 par énergie",                           # Titre de la figure
             #hovertemplate = "%{label}: <br>Popularity: %{percent} </br> %{text}"
+        )
+        
+        return fig
+    
+    def create_histogram_plot(self):
+        """Crée un graphique histogramme représentant l'évolution par année de l'émission de CO2 comparé à la population dans le Monde
+
+        Returns:
+            go.graph_objects.Figure: histogramme
+        """
+        
+        # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
+        df = self.data.get_data_per_country('World', 'CO2_emission', 'Population', 'Year', 'Energy_type') 
+        
+        # Création d'un masque pour ne récupérer que le type "all_energy_types"
+        mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
+        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe    
+        
+        # Créer l'instance de la figure
+        fig = go.Figure()
+
+        # Barre pour l'évolution de la population
+        fig.add_trace(go.Bar(
+            x=df['Year'],  # Années sur l'axe X
+            y=df['Population'],  # Population pour chaque année
+            name='Population',  # Légende
+            marker_color='#EB89B5',  # Couleur des barres
+            opacity=0.75,  # Transparence des barres
+        ))
+
+        # Barre pour l'évolution des émissions de CO2
+        fig.add_trace(go.Bar(
+            x=df['Year'],  # Années sur l'axe X
+            y=df['CO2_emission'],  # Emissions de CO2 pour chaque année
+            name='Émissions de CO2',  # Légende
+            marker_color='#330C73',  # Couleur des barres
+            opacity=0.75,  # Transparence des barres
+            yaxis='y2',  # Liaison à un deuxième axe Y
+        ))
+
+        # Mise à jour de la mise en page pour les axes et les titres
+        fig.update_layout(
+            title="Evolution de la Population et des Émissions de CO2 par Année",  # Titre de la figure
+            xaxis=dict(
+                title="Année",  # Titre de l'axe X
+                tickmode='array',  # Mode de ticks personnalisé
+                tickvals=df['Year'],  # Utilise les années comme valeur d'intervalle
+                ticktext=[str(year) for year in df['Year']],  # Affiche le texte de chaque année pour chaque intervalle
+            ),
+            yaxis=dict(
+                title="Population",  # Titre de l'axe Y pour la population
+            ),
+            yaxis2=dict(
+                title="Émissions de CO2",  # Titre de l'axe Y pour les émissions de CO2
+                overlaying='y',  # Superposition avec l'axe Y de la Population
+                side='right',  # Positionne l'échelle de l'axe secondaire à droite
+            ),
+            barmode='group',  # Mode pour afficher les barres des axes Y ensemble
+            bargap=0.5,  # Espace/Ecart entre les barres
         )
         
         return fig
@@ -158,14 +223,14 @@ class SimpleDashboard:
         """Crée une carte choroplète des émissions de CO2 pour chaque pays, pour l'année sélectionnée
 
         Args:
-            selected_year (int): année sélectionné
+            selected_year (int): Année sélectionnée
 
         Returns:
             px.graph_objects.Figure: figure choropleth
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
-        df = self.data.get_data_columns('Country', 'CO2_emission', 'Energy_type')
+        df = self.data.get_data('Country', 'CO2_emission', 'Energy_type', year=selected_year)
         
         # Création d'un masque pour ne pas récupérer l'instance "World"
         mask = self.data.get_mask(df['Country'], 'World')
@@ -186,7 +251,7 @@ class SimpleDashboard:
             mapbox_style="carto-positron",                  # Style de la Map
             zoom=2,                                         # Zoom initial sur la Map
             center={"lat": 0, "lon": 0},                    # Centre de la Map
-            title="Carte des émissions de CO2 par pays",    # Le titre de la figure
+            title="Carte des émissions de CO2 par pays",    # Titre de la figure
         )
         
         return fig

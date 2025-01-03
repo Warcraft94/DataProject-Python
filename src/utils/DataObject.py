@@ -12,56 +12,68 @@ class DataObject:
             energy_data (list): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
             years (list): Plage d'années présente dans le tableau des énergies
         """
-        # Créé un dictionnaire avec pour clé les années et pour valeur les lignes où la colonne Year correspond à la clé
-        self.energy_data = {year:energy_data.query("Year == @year") for year in years} # Year est la colonne des années dans le tableau, @year est une référence à la variable year défini dans la boucle for 
-        # Année sélectionné, par défaut on prend la première année de la plage
-        self.year = years[len(years)-1]
         
-    def change_data_for_year(self, year: int):
-        """Change l'année sélectionné et renvoi les lignes du Dataframe self.energy_data pour cette année
-
-        Args:
-            year (int): année sélectionné
-
-        Returns:
-            pd.Dataframe: contient les données (emissions CO2, production d'énergie, consommation d'énergie, ..) par pays pour l'année sélectionné
-        """
-        self.year = year
-        return self.energy_data[self.year]
+        self.energy_data = energy_data
+        # Créé un dictionnaire avec pour clé les années et pour valeur les lignes où la colonne Year correspond à la clé
+        self.energy_data_per_year = {year:energy_data.query("Year == @year") for year in years} # Year est la colonne des années dans le tableau, @year est une référence à la variable year défini dans la boucle for 
     
-    def get_data_columns(self, *columns: str):
-        """Retourne les colonnes en paramètres du Dataframe self.energy_data
-
-        Returns:
-            pd.Dataframe: contient les colonnes du Dataframe self.energy_data en paramètres
-        """
-        return self.energy_data[self.year][list(columns)]
-    
-    def filters_get_data_columns(func):
+    def filter_by_column(func):
         @wraps(func) # Permet de conserver le nom de la fonction d'origine, sa docstring, ..
-        def wrapper(self, country: str, *columns: str):
-            # Appelle la fonction get_data_per_country
-            result = func(self, country)
-            # Si on ne récupère que des colonnes spécifiques
+        def wrapper(self, *args, **kwargs):
+            # Enlève les potentiels colonnes spécifiées dans kwargs des paramètres de la fonction
+            columns = kwargs.pop('columns', None)  # Récupère les colonnes de kwargs, si présentes
+            # Appelle la fonction décoré
+            result = func(self, *args, **kwargs)
+            # Si des colonnes spécifiques sont en paramètre de kwargs
             if columns:
-                return result[list(columns)]
+                result = result[list(columns)]  # Filtre les colonnes spécifiques
             return result
         return wrapper
     
-    @filters_get_data_columns
-    def get_data_per_country(self, country: str):
-        """Renvoi les lignes du Dataframe self.energy_data correspondant au pays en paramètre
+    @filter_by_column
+    def get_data(self, *columns: str, year: int=None):
+        """Retourne le Dataframe (pour une année et des colonnes spécifique si précisé en paramètre)
+        
+        Args:
+            columns (*str): Liste des colonnes à extraire
+            year (int): Année sélectionné (optionel)
+
+        Returns:
+            pd.DataFrame: contient les colonnes du Dataframe self.energy_data en paramètres
+        """
+        
+        if year:
+            return self.energy_data_per_year[year]
+        return self.energy_data
+    
+    @filter_by_column
+    def get_data_per_country(self, country: str, *columns: str, year: int=None):
+        """Retourne les lignes du Dataframe pour un pays spécifique (et pour une année et des colonnes spécifiques si précisé en paramètre)
 
         Args:
             country (str): Pays sélectionné
+            columns (*str): Liste des colonnes à extraire
+            year (int): Année sélectionné (optionel)
             
         Returns:
             pd.Dataframe: contient les données (emissions CO2, production d'énergie, consommation d'énergie, ..) pour le pays sélectionné
         """
-        return self.energy_data[self.year][self.energy_data[self.year]['Country'] == country]
+        
+        if year:
+            return self.energy_data_per_year[year][self.energy_data_per_year[year]['Country'] == country]    
+        return self.energy_data[self.energy_data['Country'] == country]
     
     @staticmethod
     def get_mask(col: pd.DataFrame, mask: str):
+        """Génère un masque sur une colonne spécifique d'un Dataframe
+
+        Args:
+            col (pd.DataFrame): La colonne du Dataframe sur laquelle appliquer un masque
+            mask (str): String correspondant à la valeur à masquer
+
+        Returns:
+            pandas.Series: Le masque à appliquer sur le Dataframe complet
+        """
         
         return (( col.str.startswith(mask) ))
         
