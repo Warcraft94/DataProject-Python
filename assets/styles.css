@@ -7,19 +7,40 @@
     --text-color: #ffffff;
 }
 
-body {
+html, body {
     margin: 0;
     padding: 0;
-    background-color: var(--primary-color);
-    color: var(--text-color);
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color) !important;
+    color: var(--text-color) !important;
     font-family: Arial, sans-serif;
 }
 
-hr {
-    border: 1px solid var(--tertiary-color);
-    width: 100%;
+#main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+    width: 100vw;
 }
 
+.tab-parent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background-color: var(--tertiary-color);
+    padding: 10px;
+}
+
+/*******************/
+/* Header elements */
+/*******************/
 #header {
     display: flex;
     flex-direction: column;
@@ -39,10 +60,14 @@ hr {
     margin: 0;
 }
 
-#country-dropdown .Select-control {
+#country-dropdown .Select-placeholder {
     background-color: var(--quaternary-color) !important;
     border-color: var(--tertiary-color) !important;
     color: var(--text-color) !important;
+}
+
+#country-dropdown .Select-control {
+    border-color: var(--tertiary-color) !important;
     width: 300px !important;
 }
 
@@ -56,7 +81,23 @@ hr {
     width: 100%;
 }
 
+/*******************/
+/* Système de tabs */
+/*******************/
+.custom-tab {
+    color: var(--text-color) !important;
+    background-color: var(--primary-color) !important;
+    border-color: var(--quinary-color) !important;
+}
 
+.custom-tab--selected {
+    text-decoration: underline;
+    border-top: 3px solid var(--quaternary-color) !important
+}
+
+/*******************/
+/* Footer elements */
+/*******************/
 #footer {
     display: flex;
     justify-content: center;
