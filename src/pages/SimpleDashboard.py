@@ -1,12 +1,11 @@
 import plotly_express as px
 import pandas as pd
-import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
-from .DataObject import DataObject
-from .footer import create_footer
-from .header import create_header
+from ..utils.DataObject import DataObject
+from ..components.footer import create_footer
+from ..components.header import create_header
 
 class SimpleDashboard:
     """Classe chargé de générer le Dashboard 
@@ -29,15 +28,6 @@ class SimpleDashboard:
         # Année sélectionné pour l'affichage des graphiques, par défaut on prend la première année de la plage
         self.year = years[len(years)-1]
         
-        # Initialisation de l'application Dash
-        self.app = dash.Dash(__name__)
-        
-        # Layout de l'application
-        self.app.layout = self.create_layout()
-
-        # Configuration des callbacks pour l'interaction et les updates des graphiques
-        self.setup_callbacks()
-        
     def create_layout(self):
         """Crée le layout du site avec la disposition des différents composants
         """
@@ -48,47 +38,47 @@ class SimpleDashboard:
         fig2 = self.create_pie_plot(self.year)
         fig3 = self.create_choropleth_map(self.year)
         
-        return html.Div([
+        return html.Div(id="main-container", children=[
             create_header(self.years),
-            
+
             # Titre de la page
-            html.H1(
-                id="title",
-                style={'textAlign': 'center', 'color': '#7FDBFF'}
-            ),
+            # html.H1(
+            #     id="title",
+            #     style={'textAlign': 'center', 'color': '#7FDBFF'}
+            # ),
 
-            # Nuage de points (Consommation d'énergie comparé à émission de CO2 de chaque pays)
-            dcc.Graph(
-                id='graph1',
-                figure=fig1
-            ),
-            
-            # Legend
-            html.Div(
-                id="legend",
-                style={'marginTop': '20px'}
-            ),
-
-            # Graphique circulaires (Emission de CO2 par type d'énergie)
-            dcc.Graph(
-                id='graph2',
-                figure=fig2
-            ),
-            
-            # Carte choroplète (Emission de CO2 par pays)
-            dcc.Graph(
-                id='graph3',
-                figure=fig3
-            ),
-            
-            create_footer(),
+            dcc.Tabs(value='tab1', children=[
+                dcc.Tab(label='Nuage de points', value='tab1', className="custom-tab", selected_className='custom-tab--selected', children=[
+                    # Nuage de points (Consommation d'énergie comparé à émission de CO2 de chaque pays)
+                    dcc.Graph(
+                        id='graph1',
+                        figure=fig1
+                    )
+                ]),
+                dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected', children=[
+                    # Graphique circulaires (Emission de CO2 par type d'énergie)
+                    dcc.Graph(
+                        id='graph2',
+                        figure=fig2
+                    ),
+                ]),
+                dcc.Tab(label='Carte choroplète', value='tab3', className="custom-tab", selected_className='custom-tab--selected', children=[
+                    # Carte choroplète (Emission de CO2 par pays)
+                    dcc.Graph(
+                        id='graph3',
+                        figure=fig3
+                    ),
+                ]),
+            ]),
+                   
+            create_footer()
         ])
     
-    def setup_callbacks(self):
+    def setup_callbacks(self, app):
         """Configure les callbacks pour update les graphiques en fonction des entrées
         """
         
-        @self.app.callback(
+        @app.callback(
             [Output('graph1', 'figure'), Output('graph2', 'figure'), Output('graph3', 'figure')],
             [Input('year-slider', 'value')]
         )
@@ -99,23 +89,6 @@ class SimpleDashboard:
             fig2 = self.create_pie_plot(selected_year)
             fig3 = self.create_choropleth_map(selected_year)
             return fig1, fig2, fig3
-        
-        # Modèles pour update le graphique 1 et le graphique 2 séparément
-        """
-        @self.app.callback(
-            [Output('graph1', 'figure')],
-            [Input('year-slider', 'value')]
-        )
-        """
-        #def update_graph1()
-        
-        """
-        @self.app.callback(
-            [Output('graph2', 'figure')],
-            [Input('year-slider', 'value')]
-        )
-        """
-        #def update_graph2()
         
     def create_scatter_plot(self, selected_year: int):
         """Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
@@ -217,9 +190,3 @@ class SimpleDashboard:
         )
         
         return fig
-
-    def run(self):
-        """Lance l'application Dash
-        """
-        
-        self.app.run_server(debug=True)

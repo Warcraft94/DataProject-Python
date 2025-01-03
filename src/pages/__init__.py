@@ -1,1 +1,1 @@
-from .home import create_home_page
+from .SimpleDashboard import SimpleDashboard  # Importation de la classe SimpleDashboard

@@ -6,42 +6,12 @@ import json
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from src.utils import clean_geojson
-from src.pages import create_home_page
-from src.components import SimpleDashboard
+from src.pages import SimpleDashboard
+from config import DASH_DEBUG_MODE
 
 #
 # Data
 #
-"""
-year = 2002
-
-years = pop_data["Year"].unique()
-data = {year:pop_data.query("Year == @year") for year in years}
-
-print(years)
-
-#
-# nos données
-#
-# Récupération de la colonne 'Code Département' contenant les codes INSEE des communes
-countries_code = pop_data['Country']
-
-# Création d'un masque pour ne récupérer que les communes d'IDF
-mask = ( ( countries_code.str.startswith('World') ) )
-
-# Filtrage avec le masque pour ne pas prendre = World
-pop_data = pop_data[~mask]
-
-energy_type = pop_data['Energy_type']
-mask2 = ( ( energy_type.str.startswith('all_energy_types') ) ) # Filtrage avec le masque pour ne pas prendre = all_energy_types
-pop_data = pop_data[mask2]
-
-pop_data['ADMIN'] = pop_data.pop('Country')
-pop_data["CO2_emission"] = pandas.to_numeric(pop_data["CO2_emission"])
-
-df = pop_data
-"""
-
 def load_data():
     """Récupère les fichiers de données
 
@@ -73,9 +43,23 @@ def load_data():
 #
 if __name__ == '__main__':
     # Récupère les données
-    energy_data, geojson_data = load_data()    
+    energy_data, geojson_data = load_data()
+
     # Créer l'instance de la classe SimpleDashboard
-    dashboard = SimpleDashboard(energy_data, geojson_data)
+    dashboard_page = SimpleDashboard(energy_data, geojson_data)
+
+    # Initialisation de l'application Dash
+    app = dash.Dash(__name__)
+
+    # Titre de l'application
+    app.title = "CO²Map"
+    
+    # Layout de l'application
+    app.layout = dashboard_page.create_layout()
+
+    # Configuration des callbacks pour l'interaction et les updates des graphiques
+    dashboard_page.setup_callbacks(app)
+
     # Lance l'application web dash
-    dashboard.run()
+    app.run_server(debug=DASH_DEBUG_MODE)
     
