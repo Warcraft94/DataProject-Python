@@ -15,19 +15,6 @@ def create_header(years):
                     )
                 ]
             ),
-            html.Hr(),
-            html.Div(
-                id="header-slider",
-                children=[
-                    dcc.Slider(
-                        years.min(),
-                        years.max(),
-                        step=None,
-                        value=years.max(),
-                        marks={str(year): str(year) for year in years},
-                        id='year-slider'
-                    )
-                ]
-            )
+            html.Hr()
         ]
     )

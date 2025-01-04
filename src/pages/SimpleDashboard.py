@@ -48,6 +48,21 @@ class SimpleDashboard:
                 dcc.Tab(label='Carte choroplète', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
 
+            html.Div(
+                id="slider-container",
+                children=[
+                    dcc.Slider(
+                        self.years.min(),
+                        self.years.max(),
+                        step=None,
+                        value=self.years.max(),
+                        marks={str(year): str(year) for year in self.years},
+                        id='years-slider'
+                    )
+                ]
+            ),
+                
+
             dcc.Graph(
                 id='graph',
                 figure=fig_default # Affiche le graphique par défaut
@@ -61,21 +76,25 @@ class SimpleDashboard:
         """
         
         @app.callback(
-            Output('graph', 'figure'),
+            [Output('graph', 'figure'), 
+             Output('slider-container', 'style')],
             [Input("tabs", "value"),
-            Input("year-slider", "value")]
+            Input("years-slider", "value")]
         )
         # Update tous les graphiques à chaque changement d'année
         def update_graphs(selected_tab: str,selected_year: int):
+            slider_style = {'display': 'block'}
+
             if selected_tab == 'tab1':
                 fig = self.create_scatter_plot(selected_year)
             elif selected_tab == 'tab2':
                 fig = self.create_pie_plot(selected_year)
             elif selected_tab == 'tab3':
                 fig = self.create_histogram_plot()
+                slider_style = {'display': 'none'}
             elif selected_tab == 'tab4':
                 fig = self.create_choropleth_map(selected_year)
-            return fig
+            return fig, slider_style
         
     def create_scatter_plot(self, selected_year: int):
         """Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
