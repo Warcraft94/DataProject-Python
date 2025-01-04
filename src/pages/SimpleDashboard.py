@@ -107,7 +107,7 @@ class SimpleDashboard:
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
-        df = self.data.get_data('Country', 'Energy_consumption', 'Energy_production', 'CO2_emission', 'Energy_type', 'Year', year=selected_year)
+        df = self.data.get_data('Country', columns=['Energy_consumption', 'CO2_emission', 'Energy_type', 'Country'], year=selected_year)
         
         # Création d'un masque pour ne pas récupérer l'instance "World"
         mask = self.data.get_mask(df['Country'], 'World')
@@ -116,16 +116,20 @@ class SimpleDashboard:
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
         df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe
-        
+
         # Crée un graphique de nuages de points
         fig = px.scatter(
             df, 
             x="Energy_consumption", 
             y="CO2_emission", 
             color="Country", 
-            size="Year", 
             hover_name="Country",
-            title="Emissions de CO2 par rapport à la consommation d'énergie par pays"   # Titre de la figure
+            title="Emissions de CO2 par rapport à la consommation d'énergie par pays",   # Titre de la figure
+        )
+        
+        # Personnalisation du texte de survol
+        fig.update_traces(
+            hovertemplate="Emissions CO2: %{x:.2f} MMtonnes<br>Consommation Energie: %{y:.2f} Quad Btu</br>"  # Texte personnalisé de l'info-bulle
         )
         
         return fig
@@ -141,12 +145,12 @@ class SimpleDashboard:
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
-        df = self.data.get_data_per_country('World', 'Energy_type', 'CO2_emission', year=selected_year)   
+        df = self.data.get_data_per_country('World', columns=['Energy_type', 'CO2_emission'], year=selected_year)   
         
         # Création d'un masque pour ne pas récupérer l'instance "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
         df = df[~mask] # Enlève l'instance "all_energy_types" du Dataframe
-        
+
         # Crée un graphique circulaire (camembert)
         fig = px.pie(
             df,
@@ -154,8 +158,12 @@ class SimpleDashboard:
             values = "CO2_emission",
             labels = "Energy_type",
             color_discrete_sequence=['red', 'blue', 'green', 'orange'],
-            title="Emissions de CO2 par énergie",                           # Titre de la figure
-            #hovertemplate = "%{label}: <br>Popularity: %{percent} </br> %{text}"
+            title="Emissions de CO2 par énergie",           # Titre de la figure
+        )
+        
+        # Personnalisation du texte de survol
+        fig.update_traces(
+            hovertemplate="Emissions CO2: %{value:.2f} MMTonnes"  # Texte personnalisé de l'info-bulle
         )
         
         return fig
@@ -168,7 +176,7 @@ class SimpleDashboard:
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
-        df = self.data.get_data_per_country('World', 'CO2_emission', 'Population', 'Year', 'Energy_type') 
+        df = self.data.get_data_per_country('World', columns=['CO2_emission', 'Population', 'Year', 'Energy_type']) 
         
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
@@ -217,6 +225,11 @@ class SimpleDashboard:
             bargap=0.5,  # Espace/Ecart entre les barres
         )
         
+        # Personnalisation du texte de survol
+        fig.update_traces(
+            hovertemplate="%{label} <br>%{value:.2f} MMTonnes</br>"  # Texte personnalisé de l'info-bulle
+        )
+        
         return fig
 
     def create_choropleth_map(self, selected_year: int):
@@ -230,7 +243,7 @@ class SimpleDashboard:
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
-        df = self.data.get_data('Country', 'CO2_emission', 'Energy_type', year=selected_year)
+        df = self.data.get_data('Country', columns=['CO2_emission', 'Energy_type', 'Country', 'Population'], year=selected_year)
         
         # Création d'un masque pour ne pas récupérer l'instance "World"
         mask = self.data.get_mask(df['Country'], 'World')
@@ -239,6 +252,9 @@ class SimpleDashboard:
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
         df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe
+        
+        # On passe la colonne Population en Mperson (Milion of person)
+        df['Population'] = df['Population'] / 1000
         
         fig = px.choropleth_mapbox(
             df,
@@ -252,6 +268,16 @@ class SimpleDashboard:
             zoom=2,                                         # Zoom initial sur la Map
             center={"lat": 0, "lon": 0},                    # Centre de la Map
             title="Carte des émissions de CO2 par pays",    # Titre de la figure
+            hover_data={
+                "Country": True,                            # Affiche les pays
+                "CO2_emission": True,                       # Affiche les émissions de CO2
+                "Population": True,                         # Affiche la population
+            },
+        )
+        
+        # Personnalisation du texte de survol
+        fig.update_traces(
+            hovertemplate="<b>%{customdata[0]}</b> <br>Émissions de CO2: %{customdata[1]:.2f} MMTonnes<br>Population: %{customdata[2]:.2f} M"
         )
         
         return fig

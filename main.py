@@ -33,8 +33,8 @@ def load_data():
     energy_data = pd.read_csv(data_path, sep=';')
     
     energy_data["CO2_emission"] = pd.to_numeric(energy_data["CO2_emission"])
-    energy_data["Energy_consumption"] = pd.to_numeric(energy_data["CO2_emission"])
-    energy_data["Energy_production"] = pd.to_numeric(energy_data["CO2_emission"])
+    energy_data["Energy_consumption"] = pd.to_numeric(energy_data["Energy_consumption"].replace({',': '.'}, regex=True))
+    # energy_data["Energy_production"] = pd.to_numeric(energy_data["Energy_production"].replace({',': '.'}, regex=True))
     
     return energy_data, geojson_data
 
