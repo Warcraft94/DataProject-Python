@@ -11,6 +11,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    transition: none !important;
 }
 
 body {
@@ -99,7 +100,7 @@ body {
 /* Graphiques */
 /*******************/
 #graph {
-    flex-grow: 1;
+    height: 100%;
 }
 
 /*******************/
