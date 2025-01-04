@@ -35,7 +35,7 @@ body {
     flex-direction: column;
     overflow: auto;
     background-color: var(--tertiary-color);
-    padding: 10px;
+    padding-top: 10px;
 }
 
 /*******************/
@@ -93,6 +93,13 @@ body {
 .custom-tab--selected {
     text-decoration: underline;
     border-top: 3px solid var(--quaternary-color) !important
+}
+
+/*******************/
+/* Graphiques */
+/*******************/
+#graph {
+    flex-grow: 1;
 }
 
 /*******************/

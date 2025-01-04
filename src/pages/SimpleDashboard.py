@@ -1,6 +1,5 @@
 import plotly_express as px
 import plotly.graph_objects as go
-import pandas as pd
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
@@ -8,11 +7,14 @@ from ..utils.DataObject import DataObject
 from ..components.footer import create_footer
 from ..components.header import create_header
 
+from dash import Dash
+from pandas import DataFrame
+
 class SimpleDashboard:
     """Classe chargé de générer le Dashboard 
     """
     
-    def __init__(self, energy_data: pd.DataFrame, geojson_data: dict):
+    def __init__(self, energy_data: DataFrame, geojson_data: dict):
         """Constructeur de la classe SimpleDashboard
 
         Args:
@@ -32,69 +34,48 @@ class SimpleDashboard:
         """Crée le layout du site avec la disposition des différents composants
         """
         
-        fig1 = self.create_scatter_plot(self.year)
-        fig2 = self.create_pie_plot(self.year)
-        fig3 = self.create_histogram_plot()
-        fig4 = self.create_choropleth_map(self.year)
+        # Crée un graphique par défaut pour l'affichage
+        fig_default = self.create_scatter_plot(self.year)
         
         return html.Div(id="main-container", children=[
             create_header(self.years),
 
-            # Titre de la page
-            # html.H1(
-            #     id="title",
-            #     style={'textAlign': 'center', 'color': '#7FDBFF'}
-            # ),
-
-            dcc.Tabs(value='tab1', children=[
-                dcc.Tab(label='Nuage de points', value='tab1', className="custom-tab", selected_className='custom-tab--selected', children=[
-                    # Nuage de points (Consommation d'énergie comparé à émission de CO2 de chaque pays)
-                    dcc.Graph(
-                        id='graph1',
-                        figure=fig1
-                    )
-                ]),
-                dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected', children=[
-                    # Graphique circulaires (Emission de CO2 par type d'énergie)
-                    dcc.Graph(
-                        id='graph2',
-                        figure=fig2
-                    ),
-                ]),
-                dcc.Tab(label='Histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected', children=[
-                    # Graphique histogramme (Evolution emission CO2 par rapport à la Population)
-                    dcc.Graph(
-                        id='graph3',
-                        figure=fig3
-                    ),
-                ]),
-                dcc.Tab(label='Carte choroplète', value='tab4', className="custom-tab", selected_className='custom-tab--selected', children=[
-                    # Carte choroplète (Emission de CO2 par pays)
-                    dcc.Graph(
-                        id='graph4',
-                        figure=fig4
-                    ),
-                ]),
+            # Slider pour sélectionner le graphique
+            dcc.Tabs(id="tabs", value='tab1', children=[
+                dcc.Tab(label='Nuage de points', value='tab1', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Graphique histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Carte choroplète', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
+
+            dcc.Graph(
+                id='graph',
+                figure=fig_default # Affiche le graphique par défaut
+            ),
                    
             create_footer()
         ])
     
-    def setup_callbacks(self, app):
+    def setup_callbacks(self, app: Dash):
         """Configure les callbacks pour update les graphiques en fonction des entrées
         """
         
         @app.callback(
-            [Output('graph1', 'figure'), Output('graph2', 'figure'), Output('graph3', 'figure'), Output('graph4', 'figure')],
-            [Input('year-slider', 'value')]
+            Output('graph', 'figure'),
+            [Input("tabs", "value"),
+            Input("year-slider", "value")]
         )
-        # Met à jour tous les graphiques à chaque changement d'année
-        def update_graphs(selected_year: int):
-            fig1 = self.create_scatter_plot(selected_year)
-            fig2 = self.create_pie_plot(selected_year)
-            fig3 = self.create_histogram_plot()
-            fig4 = self.create_choropleth_map(selected_year)
-            return fig1, fig2, fig3, fig4
+        # Update tous les graphiques à chaque changement d'année
+        def update_graphs(selected_tab: str,selected_year: int):
+            if selected_tab == 'tab1':
+                fig = self.create_scatter_plot(selected_year)
+            elif selected_tab == 'tab2':
+                fig = self.create_pie_plot(selected_year)
+            elif selected_tab == 'tab3':
+                fig = self.create_histogram_plot()
+            elif selected_tab == 'tab4':
+                fig = self.create_choropleth_map(selected_year)
+            return fig
         
     def create_scatter_plot(self, selected_year: int):
         """Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
