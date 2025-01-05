@@ -1,2 +1,2 @@
-from .clean_data import clean_geojson
-from .DataObject import DataObject  # Importation de la classe DataObject
+from .clean_data import clean_geojson, clean_data
+from .DataObject import DataObject
