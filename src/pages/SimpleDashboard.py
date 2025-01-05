@@ -7,6 +7,7 @@ from ..utils.DataObject import DataObject
 from ..components.footer import create_footer
 from ..components.header import create_header
 
+from plotly.graph_objects import Figure
 from dash import Dash
 from pandas import DataFrame
 
@@ -105,7 +106,7 @@ class SimpleDashboard:
                 fig = self.create_choropleth_map(selected_year)
             return fig, slider_style
         
-    def create_scatter_plot(self, selected_year: int) -> px.Figure:
+    def create_scatter_plot(self, selected_year: int) -> Figure:
         """
         Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
 
@@ -113,7 +114,7 @@ class SimpleDashboard:
             selected_year (int): Année sélectionnée
 
         Returns:
-            px.Figure: graphique en nuage de points
+            Figure: graphique en nuage de points
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
@@ -144,7 +145,7 @@ class SimpleDashboard:
         
         return fig
     
-    def create_pie_plot(self, selected_year: int) -> px.Figure:
+    def create_pie_plot(self, selected_year: int) -> Figure:
         """
         Crée un graphique circulaire (camembert) représentant le % d'émissions de CO2 pour chaque type d'énergie dans le Monde pour l'année sélectionnée
 
@@ -152,7 +153,7 @@ class SimpleDashboard:
             selected_year (int): Année sélectionnée
 
         Returns:
-            px.graph_objects.Figure: graphique circulaire
+            Figure: graphique circulaire
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
@@ -179,12 +180,12 @@ class SimpleDashboard:
         
         return fig
     
-    def create_histogram_plot(self) -> go.Figure:
+    def create_histogram_plot(self) -> Figure:
         """
         Crée un graphique histogramme représentant l'évolution par année de l'émission de CO2 comparé à la population dans le Monde
 
         Returns:
-            go.graph_objects.Figure: histogramme
+            Figure: histogramme
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
@@ -244,7 +245,7 @@ class SimpleDashboard:
         
         return fig
 
-    def create_choropleth_map(self, selected_year: int) -> px.Figure:
+    def create_choropleth_map(self, selected_year: int) -> Figure:
         """
         Crée une carte choroplète des émissions de CO2 pour chaque pays, pour l'année sélectionnée
 
@@ -252,7 +253,7 @@ class SimpleDashboard:
             selected_year (int): Année sélectionnée
 
         Returns:
-            px.graph_objects.Figure: figure choropleth
+            Figure: figure choropleth
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
