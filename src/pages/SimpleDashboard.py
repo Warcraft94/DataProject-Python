@@ -11,11 +11,13 @@ from dash import Dash
 from pandas import DataFrame
 
 class SimpleDashboard:
-    """Classe chargé de générer le Dashboard 
+    """
+    Classe chargé de générer le Dashboard 
     """
     
-    def __init__(self, energy_data: DataFrame, geojson_data: dict):
-        """Constructeur de la classe SimpleDashboard
+    def __init__(self, energy_data: DataFrame, geojson_data: dict) -> None:
+        """
+        Constructeur de la classe SimpleDashboard
 
         Args:
             energy_data (pd.DataFrame): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
@@ -23,24 +25,28 @@ class SimpleDashboard:
         """
         # Récupère toutes les années uniques dans le tableau energy_data
         years = energy_data["Year"].unique()
+
         # DataObject contenant les différents tableaux de données utilisés pour les graphiques
         self.data = DataObject(energy_data, years)
         self.geojson_data = geojson_data
         self.years = years
+
         # Année sélectionné pour l'affichage des graphiques, par défaut on prend la première année de la plage
         self.year = years[len(years)-1]
         
-    def create_layout(self):
-        """Crée le layout du site avec la disposition des différents composants
+    def create_layout(self) -> html.Div:
+        """
+        Crée le layout du site avec la disposition des différents composants
         """
         
         # Crée un graphique par défaut pour l'affichage
         fig_default = self.create_scatter_plot(self.year)
         
         return html.Div(id="main-container", children=[
+            # Header de l'application
             create_header(self.years),
 
-            # Slider pour sélectionner le graphique
+            # Slider pour sélectionner le graphique à afficher
             dcc.Tabs(id="tabs", value='tab1', children=[
                 dcc.Tab(label='Nuage de points', value='tab1', className="custom-tab", selected_className='custom-tab--selected'),
                 dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
@@ -48,6 +54,7 @@ class SimpleDashboard:
                 dcc.Tab(label='Carte choroplète', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
 
+            # Slider pour sélectionner l'année
             html.Div(
                 id="slider-container",
                 children=[
@@ -62,17 +69,19 @@ class SimpleDashboard:
                 ]
             ),
                 
-
+            # Graphique affiché en fonction de l'onglet sélectionné
             dcc.Graph(
                 id='graph',
                 figure=fig_default # Affiche le graphique par défaut
             ),
-                   
+            
+            # Footer de l'application
             create_footer()
         ])
     
-    def setup_callbacks(self, app: Dash):
-        """Configure les callbacks pour update les graphiques en fonction des entrées
+    def setup_callbacks(self, app: Dash) -> None:
+        """
+        Configure les callbacks pour update les graphiques en fonction des entrées
         """
         
         @app.callback(
@@ -81,8 +90,8 @@ class SimpleDashboard:
             [Input("tabs", "value"),
             Input("years-slider", "value")]
         )
-        # Update tous les graphiques à chaque changement d'année
-        def update_graphs(selected_tab: str,selected_year: int):
+        # Update du graphique (et du slider si on est sur l'onglet 3) en fonction de l'onglet sélectionné et de l'année sélectionnée
+        def update_graphs(selected_tab: str,selected_year: int) -> tuple:
             slider_style = {'display': 'block'}
 
             if selected_tab == 'tab1':
@@ -96,14 +105,15 @@ class SimpleDashboard:
                 fig = self.create_choropleth_map(selected_year)
             return fig, slider_style
         
-    def create_scatter_plot(self, selected_year: int):
-        """Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
+    def create_scatter_plot(self, selected_year: int) -> px.Figure:
+        """
+        Crée un graphique en nuage de points représentant l'énergie consommé par rapport à l'émission de CO2 pour chaque pays, pour l'année sélectionnée
 
         Args:
             selected_year (int): Année sélectionnée
 
         Returns:
-            px.graph_objects.Figure: graphique en nuage de points
+            px.Figure: graphique en nuage de points
         """
         
         # Récupère les colonnes spécifiés en paramètres du Dataframe data
@@ -134,8 +144,9 @@ class SimpleDashboard:
         
         return fig
     
-    def create_pie_plot(self, selected_year: int):
-        """Crée un graphique circulaire (camembert) représentant le % d'émissions de CO2 pour chaque type d'énergie dans le Monde pour l'année sélectionnée
+    def create_pie_plot(self, selected_year: int) -> px.Figure:
+        """
+        Crée un graphique circulaire (camembert) représentant le % d'émissions de CO2 pour chaque type d'énergie dans le Monde pour l'année sélectionnée
 
         Args:
             selected_year (int): Année sélectionnée
@@ -168,8 +179,9 @@ class SimpleDashboard:
         
         return fig
     
-    def create_histogram_plot(self):
-        """Crée un graphique histogramme représentant l'évolution par année de l'émission de CO2 comparé à la population dans le Monde
+    def create_histogram_plot(self) -> go.Figure:
+        """
+        Crée un graphique histogramme représentant l'évolution par année de l'émission de CO2 comparé à la population dans le Monde
 
         Returns:
             go.graph_objects.Figure: histogramme
@@ -232,8 +244,9 @@ class SimpleDashboard:
         
         return fig
 
-    def create_choropleth_map(self, selected_year: int):
-        """Crée une carte choroplète des émissions de CO2 pour chaque pays, pour l'année sélectionnée
+    def create_choropleth_map(self, selected_year: int) -> px.Figure:
+        """
+        Crée une carte choroplète des émissions de CO2 pour chaque pays, pour l'année sélectionnée
 
         Args:
             selected_year (int): Année sélectionnée

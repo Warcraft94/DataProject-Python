@@ -1,6 +1,12 @@
 from dash import html
 
-def create_footer():
+def create_footer() -> html.Footer:
+    """
+    Crée le footer de l'application
+
+    Returns:
+        html.Footer: Footer de l'application
+    """
 
     return html.Footer(
         id="footer",

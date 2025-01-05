@@ -7,7 +7,8 @@ from config import DASH_DEBUG_MODE
 from src.utils import clean_data, clean_geojson
 
 def load_data() -> tuple:
-    """Récupère les fichiers de données
+    """
+    Récupère les fichiers de données
 
     Returns:
         Dataframe: Dataframe des données d'énergies et d'émissions de CO2 par pays

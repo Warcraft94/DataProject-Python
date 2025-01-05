@@ -1,12 +1,14 @@
-import pandas as pd
-
+from pandas import DataFrame, Series
 from functools import wraps
 
 class DataObject:
-    """Classe chargé de la gestion des données (coupe, trie, sépare les données, ..)
     """
-    def __init__(self, energy_data: pd.DataFrame, years: list):
-        """Constructeur de la classe DataObject
+    Classe chargé de la gestion des données (coupe, trie, sépare les données, ..)
+    """
+
+    def __init__(self, energy_data: DataFrame, years: list) -> None:
+        """
+        Constructeur de la classe DataObject
 
         Args:
             energy_data (list): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
@@ -17,7 +19,7 @@ class DataObject:
         # Créé un dictionnaire avec pour clé les années et pour valeur les lignes où la colonne Year correspond à la clé
         self.energy_data_per_year = {year:energy_data.query("Year == @year") for year in years} # Year est la colonne des années dans le tableau, @year est une référence à la variable year défini dans la boucle for 
     
-    def filter_by_column(func):
+    def filter_by_column(func: callable) -> callable:
         @wraps(func) # Permet de conserver le nom de la fonction d'origine, sa docstring, ..
         def wrapper(self, *args, **kwargs):
             # Enlève les potentiels colonnes spécifiées dans kwargs des paramètres de la fonction
@@ -31,15 +33,16 @@ class DataObject:
         return wrapper
     
     @filter_by_column
-    def get_data(self, *columns: str, year: int=None):
-        """Retourne le Dataframe (pour une année et des colonnes spécifique si précisé en paramètre)
+    def get_data(self, *columns: str, year: int=None) -> DataFrame:
+        """
+        Retourne le Dataframe (pour une année et des colonnes spécifique si précisé en paramètre)
         
         Args:
             columns (*str): Liste des colonnes à extraire
             year (int): Année sélectionné (optionel)
 
         Returns:
-            pd.DataFrame: contient les colonnes du Dataframe self.energy_data en paramètres
+            DataFrame: contient les colonnes du Dataframe self.energy_data en paramètres
         """
         
         if year:
@@ -47,8 +50,9 @@ class DataObject:
         return self.energy_data
     
     @filter_by_column
-    def get_data_per_country(self, country: str, *columns: str, year: int=None):
-        """Retourne les lignes du Dataframe pour un pays spécifique (et pour une année et des colonnes spécifiques si précisé en paramètre)
+    def get_data_per_country(self, country: str, *columns: str, year: int=None) -> DataFrame:
+        """
+        Retourne les lignes du Dataframe pour un pays spécifique (et pour une année et des colonnes spécifiques si précisé en paramètre)
 
         Args:
             country (str): Pays sélectionné
@@ -56,7 +60,7 @@ class DataObject:
             year (int): Année sélectionné (optionel)
             
         Returns:
-            pd.Dataframe: contient les données (emissions CO2, production d'énergie, consommation d'énergie, ..) pour le pays sélectionné
+            Dataframe: contient les données (emissions CO2, production d'énergie, consommation d'énergie, ..) pour le pays sélectionné
         """
         
         if year:
@@ -64,15 +68,16 @@ class DataObject:
         return self.energy_data[self.energy_data['Country'] == country]
     
     @staticmethod
-    def get_mask(col: pd.DataFrame, mask: str):
-        """Génère un masque sur une colonne spécifique d'un Dataframe
+    def get_mask(col: DataFrame, mask: str) -> Series:
+        """
+        Génère un masque sur une colonne spécifique d'un Dataframe
 
         Args:
-            col (pd.DataFrame): La colonne du Dataframe sur laquelle appliquer un masque
+            col (DataFrame): La colonne du Dataframe sur laquelle appliquer un masque
             mask (str): String correspondant à la valeur à masquer
 
         Returns:
-            pandas.Series: Le masque à appliquer sur le Dataframe complet
+            Series: Le masque à appliquer sur le Dataframe complet
         """
         
         return (( col.str.startswith(mask) ))
