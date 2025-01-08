@@ -1,9 +1,11 @@
 # User Guide
 1. Clonez le répertoire Git du projet à l'aide de la commande suivante :
 -     git clone https://github.com/Warcraft94/DataProject-Python
-2. À là racine du projet, exécuter la commande suivant pour lancer l'application :
+2. À là racine du projet, faite la commande suivante :
+-     python -m pip install -r requirements.txt
+3. Puis exécuter la commande suivant pour lancer l'application :
 -     python main.py
-3. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
+4. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
 - TODO:image
 
 # Data
