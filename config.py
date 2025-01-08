@@ -30,7 +30,16 @@ MAPPED_COUNTRIES_NAMES = {
 }
 
 # Colonnes à supprimer du fichier de données car inutiles pour l'application
-DATA_COLUMNS_TO_REMOVE = ["GDP", "Energy_intensity_per_capita", "Energy_intensity_by_GDP"] # TODO : supprimer la colonne Energy_production car inutile ?
+DATA_COLUMNS_TO_REMOVE = ["GDP", "Energy_intensity_per_capita", "Energy_intensity_by_GDP", "Energy_production"]
 
 # Colonnes à convertir en numériques dans le fichier de données
-DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS = ["CO2_emission", "Energy_consumption", "Energy_production"] 
+DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS = ["CO2_emission", "Energy_consumption"]
+
+# Noms des types d'énergies à mapper pour la version française
+MAPPED_ENERGY_TYPES = {
+    "coal" : "Charbon",
+    "natural_gas" : "Gaz naturels",
+    "petroleum_n_other_liquids" : "Pétrole et autres liquides",
+    "nuclear" : "Nucléaires",
+    "renewables_n_other" : "Renouvelables et autres"
+}

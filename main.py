@@ -38,10 +38,10 @@ def load_data() -> tuple:
 if __name__ == '__main__':
 
     # Nettoie les fichiers de données et de geojson suivant les règles définies et les données nécessaires pour l'application
-    # print("Nettoyage des données geojson...")
-    # clean_geojson()
-    # print("Nettoyage des données csv...")
-    # clean_data()
+    print("Nettoyage des données geojson...")
+    clean_geojson()
+    print("Nettoyage des données csv...")
+    clean_data()
 
     # Récupère les données d'énergie et de géojson utilisées par l'application
     energy_data, geojson_data = load_data()
