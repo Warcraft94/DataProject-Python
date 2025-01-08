@@ -1,6 +1,6 @@
 import geopandas, pandas
 import os
-from config import DATAS_RAW_PATH, DATAS_CLEANED_PATH, DATA_RAW_NAME, DATA_CLEANED_NAME, GEOJSON_RAW_NAME, GEOJSON_CLEANED_NAME, MAPPED_COUNTRIES_NAMES, DATA_COLUMNS_TO_REMOVE, DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS
+from config import *
 
 def get_source_and_target_paths(source_name: str, target_name: str) -> tuple:
     """
@@ -67,6 +67,9 @@ def clean_data() -> None:
 
     # Lecture du fichier
     energy_data = pandas.read_csv(source_path, sep=';')
+
+    # Mapping des données concernant le type d'énergie pour les avoirs en français
+    energy_data = energy_data.replace({"Energy_type": MAPPED_ENERGY_TYPES})
 
     for column in DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS:
         # Remplace les virgules par des points
