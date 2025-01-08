@@ -137,14 +137,12 @@ class SimpleDashboard:
             color="Country", 
             hover_data={
                 "Country": True,            # Affiche les pays
-                "CO2_emission": True,       # Affiche les émissions de CO2
-                "Energy_consumption": True, # Affiche la consommation d'énergie
             },
         )
         
         # Personnalisation du texte de survol
         fig.update_traces(
-            hovertemplate="<b>%{customdata[0]}</b><br>Emissions CO2: %{customdata[1]:.2f}<br>Consommation Energie: %{customdata[2]:.2f}</br>"  # Texte personnalisé de l'info-bulle
+            hovertemplate="<b>%{customdata[0]}</b><br>Emissions CO2: %{x:.2f} <br>Consommation Energie: %{y:.2f} </br>"  # Texte personnalisé de l'info-bulle
         )
         
         fig.update_layout(
