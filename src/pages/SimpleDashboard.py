@@ -39,7 +39,8 @@ class SimpleDashboard:
         """
         Crée le layout du site avec la disposition des différents composants
         """
-        
+
+
         # Crée un graphique par défaut pour l'affichage
         fig_default = self.create_scatter_plot(self.year)
         
@@ -127,20 +128,38 @@ class SimpleDashboard:
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
         df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe
-
+        
         # Crée un graphique de nuages de points
         fig = px.scatter(
             df, 
             x="Energy_consumption", 
             y="CO2_emission", 
             color="Country", 
-            hover_name="Country",
-            title="Emissions de CO2 par rapport à la consommation d'énergie par pays",   # Titre de la figure
+            hover_data={
+                "Country": True,            # Affiche les pays
+                "CO2_emission": True,       # Affiche les émissions de CO2
+                "Energy_consumption": True, # Affiche la consommation d'énergie
+            },
         )
         
         # Personnalisation du texte de survol
         fig.update_traces(
-            hovertemplate="Emissions CO2: %{x:.2f} MMtonnes<br>Consommation Energie: %{y:.2f} Quad Btu</br>"  # Texte personnalisé de l'info-bulle
+            hovertemplate="<b>%{customdata[0]}</b><br>Emissions CO2: %{customdata[1]:.2f}<br>Consommation Energie: %{customdata[2]:.2f}</br>"  # Texte personnalisé de l'info-bulle
+        )
+        
+        fig.update_layout(
+            title="Emissions de CO2 par rapport à la consommation d'énergie par pays",   # Titre de la figure
+            xaxis=dict(
+                title="Energie consommée (en Quad BTU)",  # Titre de l'axe X
+            ),
+            yaxis=dict(
+                title="Taux d'émission de CO2 (en MMTonnes)",  # Titre de l'axe Y pour la population
+            ),
+            legend=dict(
+                title=dict(
+                    text="Pays"
+                )
+            ),
         )
         
         return fig
@@ -168,7 +187,6 @@ class SimpleDashboard:
             df,
             names = "Energy_type",
             values = "CO2_emission",
-            labels = "Energy_type",
             color_discrete_sequence=['red', 'blue', 'green', 'orange'],
             title="Emissions de CO2 par énergie",           # Titre de la figure
         )
@@ -193,11 +211,17 @@ class SimpleDashboard:
         
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
-        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe    
+        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe 
+        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe 
         
-        # Créer l'instance de la figure
+        df['Type d\'énergie'] = df['Energy_type']   
+        
+        # Créée l'instance de la figure
+        df['Type d\'énergie'] = df['Energy_type']   
+        
+        # Créée l'instance de la figure
         fig = go.Figure()
-
+        
         # Barre pour l'évolution de la population
         fig.add_trace(go.Bar(
             x=df['Year'],  # Années sur l'axe X
@@ -227,10 +251,10 @@ class SimpleDashboard:
                 ticktext=[str(year) for year in df['Year']],  # Affiche le texte de chaque année pour chaque intervalle
             ),
             yaxis=dict(
-                title="Population",  # Titre de l'axe Y pour la population
+                title="Population (Millions)",  # Titre de l'axe Y pour la population
             ),
             yaxis2=dict(
-                title="Émissions de CO2",  # Titre de l'axe Y pour les émissions de CO2
+                title="Émissions de CO2 (MMTonnes)",  # Titre de l'axe Y pour les émissions de CO2
                 overlaying='y',  # Superposition avec l'axe Y de la Population
                 side='right',  # Positionne l'échelle de l'axe secondaire à droite
             ),
@@ -240,7 +264,7 @@ class SimpleDashboard:
         
         # Personnalisation du texte de survol
         fig.update_traces(
-            hovertemplate="%{label} <br>%{value:.2f} MMTonnes</br>"  # Texte personnalisé de l'info-bulle
+            hovertemplate="%{value:.2f}"  # Texte personnalisé de l'info-bulle
         )
         
         return fig
