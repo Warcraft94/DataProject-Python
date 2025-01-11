@@ -66,7 +66,7 @@ def clean_data() -> None:
     source_path, target_path = get_source_and_target_paths(DATA_RAW_NAME, DATA_CLEANED_NAME)
 
     # Lecture du fichier
-    energy_data = pandas.read_csv(source_path, sep=';')
+    energy_data = pandas.read_csv(source_path, sep=',')
 
     # Mapping des données concernant le type d'énergie pour les avoirs en français
     energy_data = energy_data.replace({"Energy_type": MAPPED_ENERGY_TYPES})

@@ -4,7 +4,7 @@ import os
 import json
 from src.pages import SimpleDashboard
 from config import DASH_DEBUG_MODE
-from src.utils import clean_data, clean_geojson
+from src.utils import get_data, clean_data, clean_geojson
 
 def load_data() -> tuple:
     """
@@ -36,6 +36,9 @@ def load_data() -> tuple:
 # Main
 #
 if __name__ == '__main__':
+    # Récupère les données d'énergie via l'API Kaggle
+    print("Téléchargement du jeu de données...")
+    get_data()
 
     # Nettoie les fichiers de données et de geojson suivant les règles définies et les données nécessaires pour l'application
     print("Nettoyage des données geojson...")
