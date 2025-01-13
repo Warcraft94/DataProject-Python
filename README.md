@@ -1,7 +1,7 @@
 # User Guide
 1. Clonez le répertoire Git du projet à l'aide de la commande suivante :
 -     git clone https://github.com/Warcraft94/DataProject-Python
-2. À là racine du projet, faite la commande suivante :
+2. À là racine du projet, faite la commande suivante pour installer les dépendances :
 -     python -m pip install -r requirements.txt
 3. Puis exécuter la commande suivant pour lancer l'application :
 -     python main.py
@@ -20,8 +20,8 @@
     - **Population** - *La population dy pays concerné, mesurée en Mpersonne.*
     - **Emission de CO2** - *L'émission de CO2 de la donnée, mesurée en MMtonnes CO2.*
 
-2. Les données geojson qui nous permettant de dessiné la carte choroplèthe proviennent de ce dépôt Github, qui lui même utilise les données provenant de [Natural Earth](https://www.naturalearthdata.com/) :
-   - *https://github.com/datasets/geo-countries/blob/main/data/countries.geojson*
+2. Les données geojson qui nous permettant de dessiné la carte choroplèthe proviennent de ce dépôt Github :
+   - *https://github.com/johan/world.geo.json/blob/master/countries.geo.json*
 
 # Developer Guide
 

@@ -37,16 +37,16 @@ def clean_geojson() -> None:
     modified_rows = []
 
     # Pour tout les pays sauf le monde
-    for country in countries["ADMIN"]:
+    for country in countries["name"]:
         if country != "World":
             
             # Selectionne les lignes du pays sélectionné
-            country_selected = countries[countries["ADMIN"].str.startswith(country)]
+            country_selected = countries[countries["name"].str.startswith(country)]
             
             # Remplace les noms de pays par les noms utilisés dans le fichier de données
-            if country_selected["ADMIN"].iloc[0] in MAPPED_COUNTRIES_NAMES:
+            if country_selected["name"].iloc[0] in MAPPED_COUNTRIES_NAMES:
                 country_selected = country_selected.copy()  # Copie pour éviter les avertissements 
-                country_selected.loc[:, "ADMIN"] = country_selected["ADMIN"].replace(MAPPED_COUNTRIES_NAMES)
+                country_selected.loc[:, "name"] = country_selected["name"].replace(MAPPED_COUNTRIES_NAMES)
             
             # Ajoute les lignes modifiées à la liste
             modified_rows.append(country_selected)

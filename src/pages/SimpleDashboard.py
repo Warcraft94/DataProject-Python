@@ -70,11 +70,23 @@ class SimpleDashboard:
                     )
                 ]
             ),
-                
-            # Graphique affiché en fonction de l'onglet sélectionné
-            dcc.Graph(
-                id='graph',
-                figure=fig_default # Affiche le graphique par défaut
+            
+            html.Div(
+                id="graph-container",
+                children=[
+                    dcc.Loading(
+                        className="loading",
+                        type="circle",
+
+                        children=[
+                            # Graphique affiché en fonction de l'onglet sélectionné
+                            dcc.Graph(
+                                id='graph',
+                                figure=fig_default # Affiche le graphique par défaut
+                            )
+                        ]
+                    )
+                ]
             ),
             
             # Footer de l'application
@@ -297,7 +309,7 @@ class SimpleDashboard:
             geojson=self.geojson_data,                      # GeoJSON file
             color="CO2_emission",                           # Colonne du Dataframe qui détermine la variation de couleur par rapport aux valeurs
             locations="Country",                            # Colonne du Dataframe qui détermine le pays
-            featureidkey="properties.ADMIN",                # Clé du GeoJson pour trouver le pays associé
+            featureidkey="properties.name",                # Clé du GeoJson pour trouver le pays associé
             color_continuous_scale="YlGn",                  # Echelle de couleur
             range_color=[0, 15000],                         # Min et max de l'échelle de couleur
             mapbox_style="carto-positron",                  # Style de la Map

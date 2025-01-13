@@ -13,8 +13,8 @@ DATAS_CLEANED_PATH = f"{DATAS_BASE_PATH}/cleaned"
 # Noms des fichiers de données
 DATA_RAW_NAME = "energy.csv" # TODO: surement a changer pour un zip
 DATA_CLEANED_NAME = "cleaned_energy.csv"
-GEOJSON_RAW_NAME = "countries.geojson"
-GEOJSON_CLEANED_NAME = "cleaned_countries.geojson"
+GEOJSON_RAW_NAME = "countries.geo.json"
+GEOJSON_CLEANED_NAME = "cleaned_countries.geo.json"
 
 ################################################################
 ############### REGLES DE NETTOYAGE DES DONNEES ################
