@@ -9,7 +9,7 @@ def create_footer() -> html.Footer:
     """
 
     return html.Footer(
-        id="footer",
+        className="footer",
         children=[
             html.Div([
                 "© 2024 Poulain Kyrian & Fauconnier Aurélien, tous droits réservés.",
@@ -17,7 +17,7 @@ def create_footer() -> html.Footer:
                 "Fait en utilisant Dash et Plotly",
             ]),
             html.Div([
-                html.A("Github du projet", href="https://github.com/Warcraft94/DataProject-Python")
+                html.A("Github du projet", href="https://github.com/Warcraft94/DataProject-Python", target="_blank"),
             ])
         ]
     )

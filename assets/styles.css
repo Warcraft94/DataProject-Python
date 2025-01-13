@@ -47,44 +47,33 @@ hr {
 /*******************/
 /* Header elements */
 /*******************/
-#header {
+.header {
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
     background-color: var(--secondary-color);
 }
 
-#header-row {
+.header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
 
-#website-name {
+.website-name {
     font-size: 24px;
     margin: 0;
 }
 
-#country-dropdown .Select-placeholder {
-    background-color: var(--quaternary-color) !important;
-    border-color: var(--tertiary-color) !important;
-    color: var(--text-color) !important;
-}
-
-#country-dropdown .Select-control {
-    border-color: var(--tertiary-color) !important;
-    width: 300px !important;
-}
-
-#country-dropdown .Select-menu-outer {
-    background-color: var(--quaternary-color) !important;
-    border-color: var(--tertiary-color) !important;
-    color: var(--text-color) !important;
+.website-description {
+    font-size: 15px;
+    font-style: italic;
+    margin: 0;
 }
 
 /*******************/
-/* Système de tabs */
+/* Tabs elements */
 /*******************/
 .custom-tab {
     color: var(--text-color) !important;
@@ -98,23 +87,29 @@ hr {
 }
 
 /*******************/
-/* Graphiques */
+/* Main Content    */
 /*******************/
-#slider-container {
+.slider-container {
     padding-top: 10px !important;
 }
 
-#graph {
-    height: 80%;
-    flex-grow: 1;
-    width: 100%; 
+.graph-container {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
     overflow: hidden;
+}
+
+.graph {
+    height: 80vh !important;
+    width: 100% !important; 
 }
 
 /*******************/
 /* Footer elements */
 /*******************/
-#footer {
+.footer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,11 +120,11 @@ hr {
     gap: 10%;  
 }
 
-#footer a {
-    color: var(--text-color)    ;
+.footer a {
+    color: var(--text-color);
     text-decoration: none;
 }
 
-#footer a:hover {
+.footer a:hover {
     text-decoration: underline;
 }

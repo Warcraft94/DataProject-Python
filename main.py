@@ -55,7 +55,7 @@ if __name__ == '__main__':
     print("Lancement de l'application web...")
 
     # Initialisation de l'application Dash
-    app = dash.Dash(__name__)
+    app = dash.Dash(__name__, external_stylesheets=["/assets/styles.css"])
 
     # Titre de l'application
     app.title = "CO²Map"

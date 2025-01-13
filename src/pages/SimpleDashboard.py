@@ -58,6 +58,7 @@ class SimpleDashboard:
 
             # Slider pour sélectionner l'année
             html.Div(
+                className="slider-container",
                 id="slider-container",
                 children=[
                     dcc.Slider(
@@ -72,7 +73,7 @@ class SimpleDashboard:
             ),
             
             html.Div(
-                id="graph-container",
+                className="graph-container",
                 children=[
                     dcc.Loading(
                         className="loading",
@@ -81,6 +82,7 @@ class SimpleDashboard:
                         children=[
                             # Graphique affiché en fonction de l'onglet sélectionné
                             dcc.Graph(
+                                className="graph",
                                 id='graph',
                                 figure=fig_default # Affiche le graphique par défaut
                             )
@@ -170,6 +172,9 @@ class SimpleDashboard:
                     text="Pays"
                 )
             ),
+
+            paper_bgcolor="#111827", # Couleur de fond
+            font_color="#ffffff" # Couleur du texte
         )
         
         return fig
@@ -205,7 +210,12 @@ class SimpleDashboard:
         fig.update_traces(
             hovertemplate="Emissions CO2: %{value:.2f} MMTonnes"  # Texte personnalisé de l'info-bulle
         )
-        
+
+        fig.update_layout(
+            paper_bgcolor="#111827", # Couleur de fond
+            font_color="#ffffff" # Couleur du texte
+        )
+
         return fig
     
     def create_histogram_plot(self) -> Figure:
@@ -270,6 +280,9 @@ class SimpleDashboard:
             ),
             barmode='group',  # Mode pour afficher les barres des axes Y ensemble
             bargap=0.5,  # Espace/Ecart entre les barres
+
+            paper_bgcolor="#111827", # Couleur de fond
+            font_color="#ffffff" # Couleur du texte
         )
         
         # Personnalisation du texte de survol
@@ -326,6 +339,11 @@ class SimpleDashboard:
         # Personnalisation du texte de survol
         fig.update_traces(
             hovertemplate="<b>%{customdata[0]}</b> <br>Émissions de CO2: %{customdata[1]:.2f} MMTonnes<br>Population: %{customdata[2]:.2f} M"
+        )
+
+        fig.update_layout(
+            paper_bgcolor="#111827", # Couleur de fond
+            font_color="#ffffff" # Couleur du texte
         )
         
         return fig
