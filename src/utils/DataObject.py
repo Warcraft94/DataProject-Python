@@ -15,9 +15,10 @@ class DataObject:
             years (list): Plage d'années présente dans le tableau des énergies
         """
         
-        self.energy_data = energy_data
+        self.energy_data : DataFrame = energy_data
+        
         # Créé un dictionnaire avec pour clé les années et pour valeur les lignes où la colonne Year correspond à la clé
-        self.energy_data_per_year = {year:energy_data.query("Year == @year") for year in years} # Year est la colonne des années dans le tableau, @year est une référence à la variable year défini dans la boucle for 
+        self.energy_data_per_year : dict = {year:energy_data.query("Year == @year") for year in years} # Year est la colonne des années dans le tableau, @year est une référence à la variable year défini dans la boucle for
     
     def filter_by_column(func: callable) -> callable:
         @wraps(func) # Permet de conserver le nom de la fonction d'origine, sa docstring, ..
