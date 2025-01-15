@@ -1,5 +1,7 @@
 import plotly_express as px
 import plotly.graph_objects as go
+import numpy as np
+
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
@@ -39,8 +41,7 @@ class SimpleDashboard:
         """
         Crée le layout du site avec la disposition des différents composants
         """
-
-
+        self.create_histogram_plot(self.year)
         # Crée un graphique par défaut pour l'affichage
         fig_default = self.create_scatter_plot(self.year)
         
@@ -52,8 +53,9 @@ class SimpleDashboard:
             dcc.Tabs(id="tabs", value='tab1', children=[
                 dcc.Tab(label='Nuage de points', value='tab1', className="custom-tab", selected_className='custom-tab--selected'),
                 dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Graphique histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Carte choroplète', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Double histogramme', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Carte choroplète', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
 
             # Slider pour sélectionner l'année
@@ -115,9 +117,11 @@ class SimpleDashboard:
             elif selected_tab == 'tab2':
                 fig = self.create_pie_plot(selected_year)
             elif selected_tab == 'tab3':
-                fig = self.create_histogram_plot()
-                slider_style = {'display': 'none'}
+                fig = self.create_histogram_plot(selected_year)
             elif selected_tab == 'tab4':
+                fig = self.create_double_histogram_plot()
+                slider_style = {'display': 'none'}
+            elif selected_tab == 'tab5':
                 fig = self.create_choropleth_map(selected_year)
             return fig, slider_style
         
@@ -143,7 +147,7 @@ class SimpleDashboard:
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
         df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe
         
-        # Crée un graphique de nuages de points
+        # Configure le nuage de points
         fig = px.scatter(
             df, 
             x="Energy_consumption", 
@@ -158,7 +162,6 @@ class SimpleDashboard:
         fig.update_traces(
             hovertemplate="<b>%{customdata[0]}</b><br>Emissions CO2: %{x:.2f} <br>Consommation Energie: %{y:.2f} </br>"  # Texte personnalisé de l'info-bulle
         )
-        
         fig.update_layout(
             title="Emissions de CO2 par rapport à la consommation d'énergie par pays",   # Titre de la figure
             xaxis=dict(
@@ -197,7 +200,7 @@ class SimpleDashboard:
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
         df = df[~mask] # Enlève l'instance "all_energy_types" du Dataframe
 
-        # Crée un graphique circulaire (camembert)
+        # Configure le graphique circulaire
         fig = px.pie(
             df,
             names = "Energy_type",
@@ -218,7 +221,7 @@ class SimpleDashboard:
 
         return fig
     
-    def create_histogram_plot(self) -> Figure:
+    def create_double_histogram_plot(self) -> Figure:
         """
         Crée un graphique histogramme représentant l'évolution par année de l'émission de CO2 comparé à la population dans le Monde
 
@@ -231,7 +234,6 @@ class SimpleDashboard:
         
         # Création d'un masque pour ne récupérer que le type "all_energy_types"
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
-        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe 
         df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe 
         
         df['Type d\'énergie'] = df['Energy_type']   
@@ -317,6 +319,7 @@ class SimpleDashboard:
         # On passe la colonne Population en Mperson (Milion of person)
         df['Population'] = df['Population'] / 1000
         
+        # Configure la map choroplèthe
         fig = px.choropleth_mapbox(
             df,
             geojson=self.geojson_data,                      # GeoJSON file
@@ -344,6 +347,58 @@ class SimpleDashboard:
         fig.update_layout(
             paper_bgcolor="#111827", # Couleur de fond
             font_color="#ffffff" # Couleur du texte
+        )
+        
+        return fig
+    
+    def create_histogram_plot(self, selected_year: int) -> Figure:
+        # Récupère les colonnes spécifiés en paramètres du Dataframe data pour le pays indiqué
+        df = self.data.get_data(columns=['CO2_emission', 'Country', 'Population', 'Year', 'Energy_type'], year=selected_year) 
+        
+        # Création d'un masque pour ne pas récupérer l'instance "World"
+        mask = self.data.get_mask(df['Country'], 'World')
+        df = df[~mask] # Enlève l'instance "World" du Dataframe
+        
+        # Création d'un masque pour ne récupérer que le type "all_energy_types"
+        mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
+        df = df[mask] # Garde que l'instance de "all_energy_types" pour chaque pays du Dataframe 
+        
+        multiplier = 20 # Nombre d'intervalles
+        max_value = df['CO2_emission'].max()
+        
+        # Filtre les valeurs positives uniquement pour éviter tout soucis avec logarithme
+        df_filtered = df[df['CO2_emission'] != 0]
+        
+        # Calcul du logarithme des données pour créer une échelle dynamique 
+        log_data = np.log10(df_filtered['CO2_emission'])      
+        # Définit des intervalles logarithmiques sur la base du log des données
+        log_intervals = np.linspace(log_data.min(), log_data.max(), multiplier)
+        # Convertit les bornes logaritmiques en valeurs réelles
+        intervals = 10**log_intervals  # On revient à l'échelle linéaire avec 10^log
+        
+        # Met la valeur maximale à la fin de la liste des intervalles
+        intervals[len(intervals)-1] = max_value
+
+        # Créé des intervalles et compte les valeurs dans chaque intervalle
+        country_level = []
+        for i in range(len(intervals) - 1):
+            interval1 = intervals[i]
+            interval2 = intervals[i+1]
+            count = df_filtered.query('(CO2_emission >= @interval1) and (CO2_emission <= @interval2)').count()
+            country_level.append(count['Country'])         
+        
+        # Configure l'histogramme
+        fig = px.bar(
+            x=[f"{intervals[i]:.2f} - {intervals[i+1]:.2f}" for i in range(len(intervals) - 1)], # Affiche les intervalles sous forme de texte
+            y=country_level,  # Nombre de pays dans chaque intervalle
+            labels={"x": "Intervalle des émissions de CO2", "y": "Nombre de pays"},
+            title="Histogramme des émissions de CO2 avec intervalles personnalisés"
+        )
+        
+        # Personnalisation du texte de survol
+        fig.update_layout(
+            xaxis_title="Émissions de CO2 (par intervalle)",
+            yaxis_title="Nombre de pays",
         )
         
         return fig
