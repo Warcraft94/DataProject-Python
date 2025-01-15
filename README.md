@@ -1,11 +1,20 @@
+# Table of Contents
+1. [Example](#example)
+
 # User Guide
 1. Clonez le répertoire Git du projet à l'aide de la commande suivante :
 -     git clone https://github.com/Warcraft94/DataProject-Python
 2. À là racine du projet, faite la commande suivante pour installer les dépendances :
 -     python -m pip install -r requirements.txt
-3. Puis exécuter la commande suivant pour lancer l'application :
+3. Pour configurer l'API Kaggle, vous devez tout d'abord vous crée un compte sur Kaggle et crée un token. Pour cela :
+- Rendez-vous sur [Kaggle](https://www.kaggle.com/) et créer vous un compte.
+- Ensuite rendez-vous dans votre Profil puis dans Paramètres.
+- Ici, vous devez cliquer sur "Créer un token" et puis placer le fichier "kaggle.json" contenant votre token dans le répertoire "~/.kaggle/kaggle.json" sous Linux, et dans "C:\Users\<Windows-username>\.kaggle\kaggle.json" pour Windows.
+- Puis exécuter la commande :
+-     python -m pip install -r requirements.txt
+4. Puis exécuter la commande suivant pour lancer l'application :
 -     python main.py
-4. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
+5. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
 - TODO:image
 
 # Data
