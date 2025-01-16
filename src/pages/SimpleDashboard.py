@@ -47,7 +47,7 @@ class SimpleDashboard:
         
         return html.Div(id="main-container", children=[
             # Header de l'application
-            create_header(self.years),
+            create_header(),
 
             # Slider pour sélectionner le graphique à afficher
             dcc.Tabs(id="tabs", value='tab1', children=[

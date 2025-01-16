@@ -1,4 +1,5 @@
-import geopandas, pandas
+import geopandas
+import pandas
 from config import DATAS_RAW_PATH, DATAS_CLEANED_PATH, GEOJSON_RAW_NAME, GEOJSON_CLEANED_NAME, DATA_RAW_NAME, DATA_CLEANED_NAME, MAPPED_COUNTRIES_NAMES, MAPPED_ENERGY_TYPES, DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS, DATA_COLUMNS_TO_REMOVE
 from src.utils.common_functions import get_path
 
