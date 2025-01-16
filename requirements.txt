@@ -4,3 +4,6 @@ pandas
 geojson
 geopandas
 kaggle
+radon
+ruff
+mypy
