@@ -1,1 +1,3 @@
-from .SimpleDashboard import SimpleDashboard  # Importation de la classe SimpleDashboard
+from .SimpleDashboard import SimpleDashboard
+
+__all__ = ['SimpleDashboard']

@@ -382,8 +382,8 @@ class SimpleDashboard:
         # Créé des intervalles et compte les valeurs dans chaque intervalle
         country_level = []
         for i in range(len(intervals) - 1):
-            interval1 = intervals[i]
-            interval2 = intervals[i+1]
+            interval1 = intervals[i] # noqa: F841
+            interval2 = intervals[i+1] # noqa: F841
             count = df_filtered.query('(CO2_emission >= @interval1) and (CO2_emission <= @interval2)').count()
             country_level.append(count['Country'])         
         
