@@ -1,3 +1,4 @@
+from typing import Callable
 from pandas import DataFrame, Series
 from functools import wraps
 
@@ -20,7 +21,7 @@ class DataObject:
         # Créé un dictionnaire avec pour clé les années et pour valeur les lignes où la colonne Year correspond à la clé
         self.energy_data_per_year : dict = {year:energy_data.query("Year == @year") for year in years} # Year est la colonne des années dans le tableau, @year est une référence à la variable year défini dans la boucle for
     
-    def filter_by_column(func: callable) -> callable:
+    def filter_by_column(func: Callable) -> Callable:
         @wraps(func) # Permet de conserver le nom de la fonction d'origine, sa docstring, ..
         def wrapper(self, *args, **kwargs):
             # Enlève les potentiels colonnes spécifiées dans kwargs des paramètres de la fonction

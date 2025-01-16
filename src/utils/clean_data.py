@@ -1,25 +1,6 @@
 import geopandas, pandas
-import os
-from config import *
-
-def get_source_and_target_paths(source_name: str, target_name: str) -> tuple:
-    """
-    Récupère les chemins vers les fichiers source et cible à partir de leur nom
-
-    Args:
-        source_name (str): Nom du fichier source
-        target_name (str): Nom du fichier cible
-
-    Returns:
-        tuple: Chemins vers les fichiers source et cible
-    """
-
-    base_dir = os.path.dirname(__file__)
-
-    source_path = os.path.join(base_dir, "..", "..", DATAS_RAW_PATH, source_name)
-    target_path = os.path.join(base_dir, "..", "..", DATAS_CLEANED_PATH, target_name)
-
-    return source_path, target_path
+from config import DATAS_RAW_PATH, DATAS_CLEANED_PATH, GEOJSON_RAW_NAME, GEOJSON_CLEANED_NAME, DATA_RAW_NAME, DATA_CLEANED_NAME, MAPPED_COUNTRIES_NAMES, MAPPED_ENERGY_TYPES, DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS, DATA_COLUMNS_TO_REMOVE
+from src.utils.common_functions import get_path
 
 
 def clean_geojson() -> None:
@@ -27,8 +8,8 @@ def clean_geojson() -> None:
     Nettoie le fichier geojson des pays
     """
 
-    source_path, target_path = get_source_and_target_paths(GEOJSON_RAW_NAME, GEOJSON_CLEANED_NAME)
-    
+    source_path = get_path("../"+"../"+DATAS_RAW_PATH, GEOJSON_RAW_NAME)
+    target_path = get_path("../"+"../"+DATAS_CLEANED_PATH, GEOJSON_CLEANED_NAME)
 
     # Lecture du fichier global
     countries = geopandas.read_file(source_path)
@@ -63,7 +44,8 @@ def clean_data() -> None:
     Nettoie le fichier de données
     """
 
-    source_path, target_path = get_source_and_target_paths(DATA_RAW_NAME, DATA_CLEANED_NAME)
+    source_path = get_path("../"+"../"+DATAS_RAW_PATH, DATA_RAW_NAME)
+    target_path = get_path("../"+"../"+DATAS_CLEANED_PATH, DATA_CLEANED_NAME)
 
     # Lecture du fichier
     energy_data = pandas.read_csv(source_path, sep=',')
