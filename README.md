@@ -9,9 +9,7 @@
 3. Pour configurer l'API Kaggle, vous devez tout d'abord vous crée un compte sur Kaggle et crée un token. Pour cela :
 - Rendez-vous sur [Kaggle](https://www.kaggle.com/) et créer vous un compte.
 - Ensuite rendez-vous dans votre Profil puis dans Paramètres.
-- Ici, vous devez cliquer sur "Créer un token" et puis placer le fichier "kaggle.json" contenant votre token dans le répertoire "~/.kaggle/kaggle.json" sous Linux, et dans "C:\Users\<Windows-username>\.kaggle\kaggle.json" pour Windows.
-- Puis exécuter la commande :
--     python -m pip install -r requirements.txt
+- Ici, vous devez cliquer sur "Créer un token" et puis placer le fichier "kaggle.json" contenant votre token dans le répertoire "~/.kaggle/kaggle.json" sous Linux, et dans "C:\Users\<nom-utilisateur>\\.kaggle\kaggle.json" pour Windows.
 4. Puis exécuter la commande suivant pour lancer l'application :
 -     python main.py
 5. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
