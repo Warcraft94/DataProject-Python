@@ -23,7 +23,7 @@ class SimpleDashboard:
         Constructeur de la classe SimpleDashboard
 
         Args:
-            energy_data (pd.DataFrame): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
+            energy_data (DataFrame): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
             geojson_data (dict): contient les données de localisation géographique des pays
         """
         # Récupère toutes les années uniques dans le tableau energy_data
@@ -55,7 +55,7 @@ class SimpleDashboard:
                 dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
                 dcc.Tab(label='Histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
                 dcc.Tab(label='Double histogramme', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Carte choroplète', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Carte choroplèthe', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
 
             # Slider pour sélectionner l'année
@@ -399,6 +399,8 @@ class SimpleDashboard:
         fig.update_layout(
             xaxis_title="Émissions de CO2 (par intervalle)",
             yaxis_title="Nombre de pays",
+            paper_bgcolor="#111827", # Couleur de fond
+            font_color="#ffffff" # Couleur du texte
         )
         
         return fig
