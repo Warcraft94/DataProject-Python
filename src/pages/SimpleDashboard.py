@@ -23,7 +23,7 @@ class SimpleDashboard:
         Constructeur de la classe SimpleDashboard
 
         Args:
-            energy_data (pd.DataFrame): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
+            energy_data (DataFrame): contient les données d'émissions de CO2 par type d'énergie et de production et consommation d'énergie, par pays et par année
             geojson_data (dict): contient les données de localisation géographique des pays
         """
         # Récupère toutes les années uniques dans le tableau energy_data
@@ -32,7 +32,7 @@ class SimpleDashboard:
         # DataObject contenant les différents tableaux de données utilisés pour les graphiques
         self.data : DataObject = DataObject(energy_data, years)
         self.geojson_data : dict = geojson_data
-        self.years : DataFrame = years
+        self.years : np.ndarray = years
 
         # Année sélectionné pour l'affichage des graphiques, par défaut on prend la première année de la plage
         self.year = years[len(years)-1]
@@ -47,7 +47,7 @@ class SimpleDashboard:
         
         return html.Div(id="main-container", children=[
             # Header de l'application
-            create_header(self.years),
+            create_header(),
 
             # Slider pour sélectionner le graphique à afficher
             dcc.Tabs(id="tabs", value='tab1', children=[
@@ -55,7 +55,7 @@ class SimpleDashboard:
                 dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
                 dcc.Tab(label='Histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
                 dcc.Tab(label='Double histogramme', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Carte choroplète', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Carte choroplèthe', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
 
             # Slider pour sélectionner l'année
@@ -382,8 +382,8 @@ class SimpleDashboard:
         # Créé des intervalles et compte les valeurs dans chaque intervalle
         country_level = []
         for i in range(len(intervals) - 1):
-            interval1 = intervals[i]
-            interval2 = intervals[i+1]
+            interval1 = intervals[i] # noqa: F841
+            interval2 = intervals[i+1] # noqa: F841
             count = df_filtered.query('(CO2_emission >= @interval1) and (CO2_emission <= @interval2)').count()
             country_level.append(count['Country'])         
         
@@ -399,6 +399,8 @@ class SimpleDashboard:
         fig.update_layout(
             xaxis_title="Émissions de CO2 (par intervalle)",
             yaxis_title="Nombre de pays",
+            paper_bgcolor="#111827", # Couleur de fond
+            font_color="#ffffff" # Couleur du texte
         )
         
         return fig

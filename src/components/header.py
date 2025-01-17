@@ -1,6 +1,6 @@
-from dash import html, dcc
+from dash import html
 
-def create_header(years: list) -> html.Header:
+def create_header() -> html.Header:
     """
     Crée le header de l'application
 
