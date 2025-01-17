@@ -32,7 +32,7 @@ class SimpleDashboard:
         # DataObject contenant les différents tableaux de données utilisés pour les graphiques
         self.data : DataObject = DataObject(energy_data, years)
         self.geojson_data : dict = geojson_data
-        self.years : DataFrame = years
+        self.years : np.ndarray = years
 
         # Année sélectionné pour l'affichage des graphiques, par défaut on prend la première année de la plage
         self.year = years[len(years)-1]
