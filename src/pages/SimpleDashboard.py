@@ -332,7 +332,7 @@ class SimpleDashboard:
                 "CO2_emission": True,                       # Affiche les émissions de CO2.
                 "Population": True,                         # Affiche la population.
             },
-            labels={'CO2_emission':'Émissions de CO2 (MMTonnes)'}, # Change le titre de la légende des couleurs
+            labels={'CO2_emission':'Émissions de CO2 (MMTonnes)'}, # Change le titre de la légende des couleurs.
         )
         
         # Personnalisation du texte de survol.
