@@ -35,22 +35,21 @@ mypi
 
 ## Data
 1. **Source des données CSV**
-- Nos données principales proviennent de [Kaggle](https://www.kaggle.com/), elles-mêmes issues de l'Agence d'information sur l'énergie ([EIA](https://www.eia.gov/)) et sont disponible [ici](https://www.kaggle.com/datasets/lobosi/c02-emission-by-countrys-grouth-and-population/data).
+    - Nos données principales proviennent de [Kaggle](https://www.kaggle.com/), elles-mêmes issues de l'Agence d'information sur l'énergie ([EIA](https://www.eia.gov/)) et sont disponible [ici](https://www.kaggle.com/datasets/lobosi/c02-emission-by-countrys-grouth-and-population/data).
 
-<br>
-     
-- Colonnes utilisées après un nettoyage :
-    - **Pays** - *Pays de la donnée.*
-    - **Type d'énergie** - *Type d'énergie de la donnée.*
-    - **Année** - *Année de la donnée.*
-    - **Consommation d'énergie** - *La consommation d'énergie pour le type d'énergie spécifique, mesurée en quad Btu.*
-    - **Population** - *La population dy pays concerné, mesurée en Mpersonne.*
-    - **Emission de CO2** - *L'émission de CO2 de la donnée, mesurée en MMtonnes CO2.*
-<br>
-- Les données recouvrent une période allant de **1980** à **2019**.
+    - Colonnes utilisées après un nettoyage :
+        - **Pays** - *Pays de la donnée.*
+        - **Type d'énergie** - *Type d'énergie de la donnée.*
+        - **Année** - *Année de la donnée.*
+        - **Consommation d'énergie** - *La consommation d'énergie pour le type d'énergie spécifique, mesurée en quad Btu.*
+        - **Population** - *La population dy pays concerné, mesurée en Mpersonne.*
+        - **Emission de CO2** - *L'émission de CO2 de la donnée, mesurée en MMtonnes CO2.*
+*Les données recouvrent une période allant de **1980** à **2019**.*
 
 2. **Source des données Géographique**
-- Les données geojson utilisées pour tracer la carte choroplèthe proviennent de ce dépôt [Github](https://github.com/johan/world.geo.json/blob/master/countries.geo.json).
+    - Les données geojson utilisées pour tracer la carte choroplèthe proviennent de ce dépôt [Github](https://github.com/johan/world.geo.json/blob/master/countries.geo.json).
+
+3. 
 
 ## Developer Guide
 Temporaire
