@@ -2,10 +2,11 @@
 1. [Présentation du projet](#presentation-du-projet)
 2. [User Guide](#user-guide)
 3. [Analyse qualité du code](#analyse-qualité-du-code)
-3. [Data](#data)
-4. [Developer Guide](#developer-guide)
-5. [Rapport d'analyse](#rapport-danalyse)
-6. [Documentations utilisées](#documentations-utilisées)
+4. [Data](#data)
+5. [Developer Guide](#developer-guide)
+6. [Rapport d'analyse](#rapport-danalyse)
+7. [Copyright](#copyright)
+8. [Documentations utilisées](#documentations-utilisées)
 
 ## Présentation du projet
 L'objectif de ce projet est de mettre en pratique les différents éléments vus lors des exercices et des cours pour éclairer un sujet d'intérêt public (météo, environnement...).
@@ -25,9 +26,10 @@ Nous avons choisi de parler de l'environnement et plus particulièrement de l'é
     -     python main.py
 5. Patientez quelques instants, vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
 
-    ![Lancement du serveur](/images/server_started.png)
-
-    *Figure 1 - Résultats dans la console après le lancement du serveur.*
+<div style="text-align: center;">
+    <img src="/images/server_started.png" alt="Lancement du serveur">
+    <p><em>Figure 1 - Résultats dans la console après le lancement du serveur.</em></p>
+</div>
 
 ## Analyse qualité du code
 Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et *mypy*, trois bibliothèques Python pour analyser la qualité du code selon différents critères.
@@ -37,27 +39,32 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
     - Pour lancer l'analyse avec Radon, exécutez la commande ci-dessous :
         -     python -m radon mi .
         - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
-    
-    ![Résultats de la maintenabilité du code](/images/radon_maintainability_test.png)
-    *Figure 2 - Résultats de la maintenabilité du code avec Radon.*
+<div style="text-align: center;">
+    <img src="/images/radon_maintainability_test.png" alt="Résultats de la maintenabilité du code">
+    <p><em>Figure 2 - Résultats de la maintenabilité du code avec Radon.</em></p>
+</div>
+
 <br>
 
 2. **Ruff**
     - [Ruff](https://docs.astral.sh/ruff//) est un linter et formateur de code Python très rapide, conçu pour détecter les erreurs de style et autres mauvaises pratiques.
     - Pour lancer l'analyse avec Ruff, exécutez la commande ci-dessous :
         -     python -m ruff check .
-    
-    ![Résultats de la maintenabilité du code](/images/ruff_test.png)
-    *Figure 3 - Résultats du test de style et mauvaises pratiques après amélioration du code.*
+<div style="text-align: center;">
+    <img src="/images/ruff_test.png" alt="Résultats du test ruff">
+    <p><em>Figure 3 - Résultats du test de style et mauvaises pratiques après amélioration du code.</em></p>
+</div>
+
 <br>
 
 3. **mypy**
     - [mypy](https://mypy.readthedocs.io/en/stable/) est un outil de vérification statique visant à assurer la cohérence des annotations de typage présentes dans le code.
     - Pour lancer l'analyse avec mypy, exécutez la commande ci-dessous :
         -     python -m mypy .
-
-    ![Résultats de la maintenabilité du code](/images/mypy_test.png)
-    *Figure 4 - Résultats du test pour les annotations de typage après amélioration du code.*
+<div style="text-align: center;">
+    <img src="/images/mypy_test.png" alt="Résultats du test mypy">
+    <p><em>Figure 3 - Résultats du test pour les annotations de typage après amélioration du code.</em></p>
+</div>
 
 ## Data
 1. **Source des données CSV**
@@ -128,6 +135,7 @@ flowchart LR
     SimpleDashboard --> create_layout
     SimpleDashboard --> setup_callbacks
 ```
+*Figure 5 - Déroulement du programme principal.*
 
 <br>
 
@@ -157,8 +165,8 @@ classDiagram
     }
 
     SimpleDashboard --> DataObject : Instancie
-
 ```
+*Figure 6 - Relation entre les deux classes python créées.*
 
 ## Rapport d'analyse
 
