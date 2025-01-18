@@ -49,14 +49,13 @@ class SimpleDashboard:
 
             # Header de l'application.
             create_header(),
-
             # Tabulations pour sélectionner le graphique à afficher.
             dcc.Tabs(id="tabs", value='tab1', children=[
-                dcc.Tab(label='Nuage de points', value='tab1', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Camembert', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Histogramme', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Double histogramme', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
-                dcc.Tab(label='Carte choroplèthe', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Carte choroplèthe', value='tab1', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Double histogramme', value='tab2', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Nuage de points', value='tab3', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Camembert', value='tab4', className="custom-tab", selected_className='custom-tab--selected'),
+                dcc.Tab(label='Histogramme', value='tab5', className="custom-tab", selected_className='custom-tab--selected'),
             ]),
 
             # Slider pour sélectionner l'année.
@@ -114,16 +113,16 @@ class SimpleDashboard:
             slider_style = {'display': 'block'}
 
             if selected_tab == 'tab1':
-                fig = self.create_scatter_plot(selected_year)
+                fig = self.create_choropleth_map(selected_year)
             elif selected_tab == 'tab2':
-                fig = self.create_pie_plot(selected_year)
-            elif selected_tab == 'tab3':
-                fig = self.create_histogram_plot(selected_year)
-            elif selected_tab == 'tab4':
                 fig = self.create_double_histogram_plot()
                 slider_style = {'display': 'none'}
+            elif selected_tab == 'tab3':
+                fig = self.create_scatter_plot(selected_year)
+            elif selected_tab == 'tab4':
+                fig = self.create_pie_plot(selected_year)
             elif selected_tab == 'tab5':
-                fig = self.create_choropleth_map(selected_year)
+                fig = self.create_histogram_plot(selected_year)
             return fig, slider_style
         
     def create_scatter_plot(self, selected_year: int) -> Figure:
@@ -333,6 +332,7 @@ class SimpleDashboard:
                 "CO2_emission": True,                       # Affiche les émissions de CO2.
                 "Population": True,                         # Affiche la population.
             },
+            labels={'CO2_emission':'Émissions de CO2 (MMTonnes)'}, # Change le titre de la légende des couleurs
         )
         
         # Personnalisation du texte de survol.
@@ -399,15 +399,20 @@ class SimpleDashboard:
             x=[f"{intervals[i]:.2f} - {intervals[i+1]:.2f}" for i in range(len(intervals) - 1)], # Affiche les intervalles sous forme de texte.
             y=country_level,  # Nombre de pays dans chaque intervalle.
             labels={"x": "Intervalle des émissions de CO2", "y": "Nombre de pays"},
-            title="Histogramme des émissions de CO2 avec intervalles personnalisés"
+            title="Histogramme du nombre de pays par pallier de taux d'émissions de CO2",
         )
         
         # Personnalisation du texte de survol.
         fig.update_layout(
-            xaxis_title="Émissions de CO2 (par intervalle)",
+            xaxis_title="Émissions de CO2 en MMTonnes (par intervalle)",
             yaxis_title="Nombre de pays",
             paper_bgcolor="#111827", # Couleur de fond.
             font_color="#ffffff" # Couleur du texte.
+        )
+        
+        # Personnalisation du texte de survol.
+        fig.update_traces(
+            hovertemplate="Intervalle: %{x}<br>Nombre de pays: %{y}"
         )
         
         return fig
