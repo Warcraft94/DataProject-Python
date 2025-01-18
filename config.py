@@ -3,7 +3,7 @@
 ######################################################################################
 
 # Lancer l'application en mode debug.
-DASH_DEBUG_MODE = True
+DASH_DEBUG_MODE = False
 
 # Paths vers les fichiers de données.
 DATAS_BASE_PATH = "data"
