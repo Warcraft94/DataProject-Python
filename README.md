@@ -26,7 +26,7 @@ Nous avons choisi de parler de l'environnement et plus particulièrement de l'é
     -     python main.py
 5. Patientez quelques instants, vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
 
-<div style="text-align: center;">
+<div align="center">
     <img src="/images/server_started.png" alt="Lancement du serveur">
     <p><em>Figure 1 - Résultats dans la console après le lancement du serveur.</em></p>
 </div>
@@ -39,7 +39,7 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
     - Pour lancer l'analyse avec Radon, exécutez la commande ci-dessous :
         -     python -m radon mi .
         - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
-<div style="text-align: center;">
+<div align="center">
     <img src="/images/radon_maintainability_test.png" alt="Résultats de la maintenabilité du code">
     <p><em>Figure 2 - Résultats de la maintenabilité du code avec Radon.</em></p>
 </div>
