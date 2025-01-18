@@ -12,7 +12,7 @@ def create_footer() -> html.Footer:
         className="footer",
         children=[
             html.Div([
-                "© 2024 Poulain Kyrian & Fauconnier Aurélien, tous droits réservés.",
+                "© 2024 Poulain Kyrian & Fauconnier Aurélien.",
                 html.Br(),
                 "Fait en utilisant Dash et Plotly",
             ]),

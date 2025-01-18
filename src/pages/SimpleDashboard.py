@@ -45,7 +45,7 @@ class SimpleDashboard:
         # Crée un graphique par défaut pour l'affichage
         fig_default = self.create_scatter_plot(self.year)
         
-        return html.Div(id="main-container", children=[
+        return html.Div(className="main-container", children=[
             # Header de l'application
             create_header(),
 

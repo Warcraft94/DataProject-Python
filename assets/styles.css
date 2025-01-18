@@ -27,19 +27,12 @@ hr {
     width: 100%;
 }
 
-#main-container {
+.main-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     height: 100vh;
     width: 100vw;
-}
-
-.tab-parent {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--tertiary-color);
 }
 
 /*******************/
@@ -73,6 +66,13 @@ hr {
 /*******************/
 /* Tabs elements */
 /*******************/
+.tab-parent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--tertiary-color);
+}
+
 .custom-tab {
     color: var(--text-color) !important;
     background-color: var(--primary-color) !important;
