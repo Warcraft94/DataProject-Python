@@ -136,7 +136,8 @@ flowchart LR
     SimpleDashboard --> create_layout
     SimpleDashboard --> setup_callbacks
 ```
-<p><em>Figure 5 - Déroulement du programme principal.</em></p>
+
+<em>Figure 5 - Déroulement du programme principal.</em>
 
 <br>
 
@@ -167,7 +168,8 @@ classDiagram
 
     SimpleDashboard --> DataObject : Instancie
 ```
-<p><em>Figure 6 - Relation entre les deux classes python créées.</em></p>
+
+<em>Figure 6 - Relation entre les deux classes python créées.</em>
 
 3. **Comment ajouter un graphique ?**
 
