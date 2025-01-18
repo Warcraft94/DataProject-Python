@@ -8,31 +8,33 @@
 6. [Documentations utilisées](#documentations-utilisées)
 
 ## Présentation du projet
-L'objectif de ce projet était de mettre en pratique les différents éléments vus lors des exercices et des cours pour éclairer un sujet d'intérêt public (météo, environnement...).
-Nous avons donc choisi de parler de l'environnement et plus particulièrement des émissions CO².
+L'objectif de ce projet est de mettre en pratique les différents éléments vus lors des exercices et des cours pour éclairer un sujet d'intérêt public (météo, environnement...).
+Nous avons choisi de parler de l'environnement et plus particulièrement de l'évolution des émissions CO² dans le Monde.
 
 ## User Guide
-1. Clonez le répertoire Git du projet à l'aide de la commande suivante :
+1. Clonez le répertoire Git du projet à l'aide de la commande :
     -     git clone https://github.com/Warcraft94/DataProject-Python
-2. À la racine du projet, faites la commande suivante pour installer les dépendances :
+2. À la racine du projet, exécutez la commande ci-dessous pour installer les dépendances :
     -     python -m pip install -r requirements.txt
-3. Ensuite pour configurer l'API Kaggle, vous devez tout d'abord vous crée un compte sur Kaggle et crée un token :
+3. Il faut maintenant configurer l'API Kaggle, pour ce faire vous devez vous créer un compte sur Kaggle et générer un token :
     - Rendez-vous sur [Kaggle](https://www.kaggle.com/) et créez-vous un compte.
-    - Ensuite rendez-vous dans votre "*Profil*" > "*Paramètres*" puis cliquez sur le bouton "*Créer un token*" qui vous téléchargera un fichier "*kaggle.json*" contenant votre token.
-    - Avec ce fichier "*kaggle.json*" placer le dans le répertoire "*~/.kaggle/kaggle.json*" sous Linux ou bien dans le répertoire  "*C:\Users\<Windows-username>\\.kaggle\kaggle.json*" sous Windows.
+    - Ensuite rendez-vous dans votre "*Profil*" > "*Paramètres*" puis cliquez sur le bouton "*Créer un token*" qui va lancer un téléchargement d'un fichier json "*kaggle.json*" contenant votre token.
+    - Placez ce fichier "*kaggle.json*" dans le répertoire "*~/.kaggle/kaggle.json*" si vous êtes sous Linux ou bien dans le répertoire  "*C:\Users\<Windows-username>\\.kaggle\kaggle.json*" si vous êtes sous Windows.
 <br>
-4. Puis exécuter la commande suivante pour lancer l'application :
+4. Puis exécutez la commande suivante pour lancer l'application :
     -     python main.py
-5. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
+5. Patientez quelques instants, vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
+
     ![Lancement du serveur](/images/server_started.png)
+
     *Figure 1 - Résultats dans la console après le lancement du serveur.*
 
 ## Analyse qualité du code
-Lors de la réalisation de notre projet, il nous a été demandé d'utiliser *Radon*, *Ruff*, et *mypy*, trois bibliothèques Python permettant d'analyser la qualité du code selon différents critères.
+Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et *mypy*, trois bibliothèques Python pour analyser la qualité du code selon différents critères.
 
 1. **Radon**
     - [Radon](https://radon.readthedocs.io/en/latest/) est un outil permettant d'évaluer la qualité du code d'un projet en mesurant la complexité et la maintenabilité selon plusieurs critères.
-    - Faites la commande ci-dessous pour exécuter Radon :
+    - Pour lancer l'analyse avec Radon, exécutez la commande ci-dessous :
         -     python -m radon mi .
         - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
     
@@ -42,7 +44,7 @@ Lors de la réalisation de notre projet, il nous a été demandé d'utiliser *Ra
 
 2. **Ruff**
     - [Ruff](https://docs.astral.sh/ruff//) est un linter et formateur de code Python très rapide, conçu pour détecter les erreurs de style et autres mauvaises pratiques.
-    - Faites la commande ci-dessous pour exécuter Ruff :
+    - Pour lancer l'analyse avec Ruff, exécutez la commande ci-dessous :
         -     python -m ruff check .
     
     ![Résultats de la maintenabilité du code](/images/ruff_test.png)
@@ -51,7 +53,7 @@ Lors de la réalisation de notre projet, il nous a été demandé d'utiliser *Ra
 
 3. **mypy**
     - [mypy](https://mypy.readthedocs.io/en/stable/) est un outil de vérification statique visant à assurer la cohérence des annotations de typage présentes dans le code.
-    - Faites la commande ci-dessous pour exécuter mypy :
+    - Pour lancer l'analyse avec mypy, exécutez la commande ci-dessous :
         -     python -m mypy .
 
     ![Résultats de la maintenabilité du code](/images/mypy_test.png)
@@ -59,9 +61,9 @@ Lors de la réalisation de notre projet, il nous a été demandé d'utiliser *Ra
 
 ## Data
 1. **Source des données CSV**
-    - Nos données principales proviennent de [Kaggle](https://www.kaggle.com/), elles-mêmes issues de l'Agence d'information sur l'énergie ([EIA](https://www.eia.gov/)) et sont disponible [ici](https://www.kaggle.com/datasets/lobosi/c02-emission-by-countrys-grouth-and-population/data).
+    - Nos données statistiques proviennent de [Kaggle](https://www.kaggle.com/), elles sont elles-mêmes issues de l'Agence d'information sur l'énergie ([EIA](https://www.eia.gov/)) et sont disponibles [ici](https://www.kaggle.com/datasets/lobosi/c02-emission-by-countrys-grouth-and-population/data).
 
-    - Colonnes utilisées :
+    - Colonnes du fichier csv utilisées :
         - **Pays** - *Pays de la donnée.*
         - **Type d'énergie** - *Type d'énergie de la donnée.*
         - **Année** - *Année de la donnée.*
@@ -74,7 +76,7 @@ Lors de la réalisation de notre projet, il nous a été demandé d'utiliser *Ra
     - Les données géographiques utilisées pour tracer la carte choroplèthe proviennent de ce dépôt [Github](https://github.com/johan/world.geo.json/blob/master/countries.geo.json).
 
 3. **Pré-traitement des données**
-    - Pour les données CSV, nous avons nettoyé et transformé les données brutes récupérées afin de réduire leur complexité et de simplifier les traitements effectué durant le fonctionnement de l'application.
+    - Pour les données CSV, nous avons nettoyé et transformé les données brutes récupérées afin de réduire leur complexité et de simplifier les traitements effectués durant le fonctionnement de l'application web.
         - Suppression des colonnes inutilisées dans le projet.
         - Suppression des lignes contenant une ou plusieurs valeurs vides.
         - Traduction des types d'énergies en français.
@@ -161,5 +163,5 @@ consommation d'énergie de chaque pays ainsi que l'évolution de leur population
 Nous déclarons sur l’honneur que le code fourni a été produit par nous même.
 
 ## Documentations utilisées
-- Dash : https://dash.plotly.com/ 
-- Plotly : https://plotly.com/python/figure-labels/ 
+- Dash :    https://dash.plotly.com/ 
+- Plotly :  https://plotly.com/python/figure-labels/ 
