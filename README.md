@@ -19,8 +19,8 @@ Nous avons choisi de parler de l'environnement et plus particulièrement de l'é
     -     python -m pip install -r requirements.txt
 3. Il faut maintenant configurer l'API Kaggle, pour ce faire vous devez vous créer un compte sur Kaggle et générer un token :
     - Rendez-vous sur [Kaggle](https://www.kaggle.com/) et créez-vous un compte.
-    - Ensuite rendez-vous dans votre "*Profil*" > "*Paramètres*" puis cliquez sur le bouton "*Créer un token*" qui va lancer un téléchargement d'un fichier json "*kaggle.json*" contenant votre token.
-    - Placez ce fichier "*kaggle.json*" dans le répertoire "*~/.kaggle/kaggle.json*" si vous êtes sous Linux ou bien dans le répertoire  "*C:\Users\<Windows-username>\\.kaggle\kaggle.json*" si vous êtes sous Windows.
+    - Ensuite rendez-vous dans votre "*Profil*" > "*Paramètres*" puis cliquez sur le bouton "*Créer un token*" qui va lancer un téléchargement d'un fichier json ```kaggle.json``` contenant votre token.
+    - Placez ce fichier ```kaggle.json``` dans le répertoire ```~/.kaggle/kaggle.json``` si vous êtes sous Linux ou bien dans le répertoire  ```C:\Users\<Windows-username>\.kaggle\kaggle.json``` si vous êtes sous Windows.
 <br>
 
 4. Puis exécutez la commande suivante pour lancer l'application :
@@ -39,7 +39,7 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
     - [Radon](https://radon.readthedocs.io/en/latest/) est un outil permettant d'évaluer la qualité du code d'un projet en mesurant la complexité et la maintenabilité selon plusieurs critères.
     - Pour lancer l'analyse avec Radon, exécutez la commande ci-dessous :
         -     python -m radon mi .
-        - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
+        - Avec comme options : ```cc``` pour la complexité, ```mi``` pour la maintenabilité et ```raw``` pour les mesures brutes.
 <div align="center">
     <img src="/images/radon_maintainability_test.png" alt="Résultats de la maintenabilité du code">
     <p><em>Figure 2 - Résultats de la maintenabilité du code avec Radon.</em></p>
