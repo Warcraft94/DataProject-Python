@@ -196,7 +196,6 @@ Pour ce faire, nous avons regrouper les données sous forme de différents graph
 Dans un premier temps, nous avons développé une carte choroplèthe permettant de voir les pays émettants le plus de CO2 ainsi que leur population totale.
 
 <img src="images/graph1.jpg" alt="Carte choroplèthe" width="500" height="200">
-
 <em>Figure 9 - Carte des émissions de CO2 par Pays.</em>
 
 Celle-ci nous a permis d'observer que certains des pays les plus peuplés étaient aussi ceux qui émettaient le plus de CO2 en 2019, ici la Chine et les Etats Unis.
