@@ -1,4 +1,4 @@
-# Table of Contents
+# Table des matières
 1. [Présentation du projet](#presentation-du-projet)
 2. [User Guide](#user-guide)
 3. [Analyse qualité du code](#analyse-qualité-du-code)
@@ -12,7 +12,6 @@ L'objectif de ce projet était de mettre en pratique les différents éléments 
 Nous avons donc choisi de parler de l'environnement et plus particulièrement des émissions CO².
 
 ## User Guide
-## Lancement du projet
 1. Clonez le répertoire Git du projet à l'aide de la commande suivante :
     -     git clone https://github.com/Warcraft94/DataProject-Python
 2. À la racine du projet, faites la commande suivante pour installer les dépendances :
@@ -29,15 +28,40 @@ Nous avons donc choisi de parler de l'environnement et plus particulièrement de
     *Figure 1 - Résultats dans la console après le lancement du serveur.*
 
 ## Analyse qualité du code
-radon
-ruff
-mypi
+Lors de la réalisation de notre projet, il nous a été demandé d'utiliser *Radon*, *Ruff*, et *mypy*, trois bibliothèques Python permettant d'analyser la qualité du code selon différents critères.
+
+1. **Radon**
+    - [Radon](https://radon.readthedocs.io/en/latest/) est un outil permettant d'évaluer la qualité du code d'un projet en mesurant la complexité et la maintenabilité selon plusieurs critères.
+    - Faites la commande ci-dessous pour exécuter Radon :
+        -     python -m radon mi .
+        - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
+    
+    ![Résultats de la maintenabilité du code](/images/radon_maintainability.png)
+    *Figure 2 - Résultats de la maintenabilité du code avec Radon.*
+<br>
+
+2. **Ruff**
+    - [Ruff](https://docs.astral.sh/ruff//) est un linter et formateur de code Python très rapide, conçu pour détecter les erreurs de style et autres mauvaises pratiques.
+    - Faites la commande ci-dessous pour exécuter Ruff :
+        -     python -m ruff check .
+    
+    ![Résultats de la maintenabilité du code](/images/ruff_test.png)
+    *Figure 3 - Résultats du test de style et mauvaises pratiques après amélioration du code.*
+<br>
+
+3. **mypy**
+    - [mypy](https://mypy.readthedocs.io/en/stable/) est un outil de vérification statique visant à assurer la cohérence des annotations de typage présentes dans le code.
+    - Faites la commande ci-dessous pour exécuter mypy :
+        -     python -m mypy .
+
+    ![Résultats de la maintenabilité du code](/images/mypy_test.png)
+    *Figure 4 - Résultats du test pour les annotations de typage après amélioration du code.*
 
 ## Data
 1. **Source des données CSV**
     - Nos données principales proviennent de [Kaggle](https://www.kaggle.com/), elles-mêmes issues de l'Agence d'information sur l'énergie ([EIA](https://www.eia.gov/)) et sont disponible [ici](https://www.kaggle.com/datasets/lobosi/c02-emission-by-countrys-grouth-and-population/data).
 
-    - Colonnes utilisées après un nettoyage :
+    - Colonnes utilisées :
         - **Pays** - *Pays de la donnée.*
         - **Type d'énergie** - *Type d'énergie de la donnée.*
         - **Année** - *Année de la donnée.*
@@ -46,10 +70,15 @@ mypi
         - **Emission de CO2** - *L'émission de CO2 de la donnée, mesurée en MMtonnes CO2.*
 *Les données recouvrent une période allant de **1980** à **2019**.*
 
-2. **Source des données Géographique**
-    - Les données geojson utilisées pour tracer la carte choroplèthe proviennent de ce dépôt [Github](https://github.com/johan/world.geo.json/blob/master/countries.geo.json).
+2. **Source des données GEOJSON**
+    - Les données géographiques utilisées pour tracer la carte choroplèthe proviennent de ce dépôt [Github](https://github.com/johan/world.geo.json/blob/master/countries.geo.json).
 
-3. 
+3. **Pré-traitement des données**
+    - Pour les données CSV, nous avons nettoyé et transformé les données brutes récupérées afin de réduire leur complexité et de simplifier les traitements effectué durant le fonctionnement de l'application.
+        - Suppression des colonnes inutilisées dans le projet.
+        - Suppression des lignes contenant une ou plusieurs valeurs vides.
+        - Traduction des types d'énergies en français.
+    - Concernant les données GeoJSON, nous avons simplement réalisé un mappage pour harmoniser certains noms de pays avec ceux utilisés dans le fichier CSV.
 
 ## Developer Guide
 Temporaire
