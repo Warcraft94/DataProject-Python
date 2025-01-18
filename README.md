@@ -170,6 +170,7 @@ classDiagram
 ```
 
 <em>Figure 6 - Relation entre les deux classes python créées.</em>
+<br>
 
 3. **Comment ajouter un graphique ?**
 
