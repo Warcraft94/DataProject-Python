@@ -12,8 +12,6 @@
 L'objectif de ce projet est de mettre en pratique les différents éléments vus lors des exercices et des cours pour éclairer un sujet d'intérêt public (météo, environnement...).
 Nous avons choisi de parler de l'environnement et plus particulièrement de l'évolution des émissions CO² dans le Monde.
 
-<video src="/video.mp4" controls></video>
-
 ## User Guide
 1. Clonez le répertoire Git du projet à l'aide de la commande :
     -     git clone https://github.com/Warcraft94/DataProject-Python
@@ -170,7 +168,8 @@ classDiagram
 ```
 *Figure 6 - Relation entre les deux classes python créées.*
 
-3. **Architecture du code**
+3. **Comment ajouter un graphique ?**
+
 
 ## Rapport d'analyse
 
