@@ -24,7 +24,7 @@ class DataObject:
     
     def filter_by_column(func: Callable) -> Callable:   # type: ignore
         @wraps(func) # Permet de conserver le nom de la fonction d'origine, sa docstring, ..
-        def wrapper(self, *args, **kwargs):
+        def wrapper(self, *args, **kwargs):   # type: ignore
             # Enlève les potentiels colonnes spécifiées dans kwargs des paramètres de la fonction.
             columns = kwargs.pop('columns', None)  # Récupère les colonnes de kwargs, si présentes.
 
