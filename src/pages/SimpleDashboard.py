@@ -235,10 +235,7 @@ class SimpleDashboard:
         
         # Création d'un masque pour ne récupérer que les lignes où type = "all_energy_types".
         mask = self.data.get_mask(df['Energy_type'], 'all_energy_types')
-        df = df[mask]
-        
-        # Renomme la colonnes pour une meilleure lisibilité.
-        df['Type d\'énergie'] = df['Energy_type']   
+        df = df[mask] 
         
         # Créée l'instance de la figure.
         fig = go.Figure()
