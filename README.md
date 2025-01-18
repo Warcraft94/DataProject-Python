@@ -197,15 +197,23 @@ Dans un premier temps, nous avons développé une carte choroplèthe permettant 
 
 <img src="images/Graph5.png" alt="Carte choroplèthe" width="500" height="200">
 
+<em>Figure 9 - Carte choroplèthe.</em>
+
 Celle-ci nous a permis d'observer que certains des pays les plus peuplés étaient aussi ceux qui émettaient le plus de CO2 en 2019, ici la Chine et les Etats Unis.
 
 Mais elle nous a aussi permis d'observer le cas contraire avec l'Inde qui est plus peuplé que les Etats Unis mais émet deux fois moins de CO2.
+
+<br>
 
 Pour préciser l'idée d'une corrélation entre la population et les émissions de CO2, nous avons développé un histogramme double permettant de comparer l'évolution de la population à l'évolution de l'émission de CO2 au fil des années.
 
 <img src="images/Graph3.png" alt="Double histogramme" width="500" height="200">
 
+<em>Figure 10 - Double histogramme.</em>
+
 Cet histogramme nous a permis de voir qu'il semble y avoir une certaine corrélation entre l'évolution de la population et les émissions de CO2, mais que ce n'est pas le seul facteur responsable de l'évolution du taux de CO2 émis.
+
+<br>
 
 Nous nous sommes alors penché sur le rapport entre l'énergie consommée par pays et le taux d'émissions de CO2 émis par ces mêmes pays.
 
@@ -213,20 +221,29 @@ Nous avons développé un graphique en nuage de points représentant donc les pa
 
 <img src="images/Graph1.png" alt="Nuage de points" width="500" height="200">
 
+<em>Figure 11 - Nuage de points.</em>
+
 Ce graphique en nuage de points nous a bien révélé une corrélation entre l'émission de CO2 et la consommation d'énergie en 2019, dessinant presque une diagonale pour cette relation.
 
-Après avoir déterminé que le taux d'émissions de CO2 était corrélé à la consommation d'énergie ainsi qu'en partie à l'évolution de la population, nous avons cherché à savoir quelle énergie était responsable du plus<br>
-grand taux d'émission de CO2. 
+<br>
+
+Après avoir déterminé que le taux d'émissions de CO2 était corrélé à la consommation d'énergie ainsi qu'en partie à l'évolution de la population, nous avons cherché à savoir quelle énergie était responsable du plus grand taux d'émission de CO2. 
 
 Nous avons réalisé un graphique circulaire affichant chaque type d'énergie ainsi que leur taux d'émission de CO2 pour le Monde.
 
 <img src="images/Graph2.png" alt="Graphique circulaire" width="500" height="200">
 
+<em>Figure 12 - Graphique circulaire.</em>
+
 Celui-ci nous a montré que l'énergie responsable du plus grand taux d'émissions dans le Monde en 2019 était le charbon.
+
+<br>
 
 Pour finir notre analyse, nous avons réalisé un histogramme permettant d'observer le nombre de pays par intervalles de taux d'émissions de CO2 afin de voir la distribution des pays selon leur niveau d'émissions et identifier les intervalles où la majorité des pays se trouvent pour avoir ainsi une vue d'ensemble des tendances globales en des taux d'émissions de CO2.
 
 <img src="images/Graph4.png" alt="Histogramme" width="500" height="200">
+
+<em>Figure 13 - Histogramme.</em>
 
 ### Conclusion 
 
