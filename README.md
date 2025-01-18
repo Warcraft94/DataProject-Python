@@ -250,7 +250,7 @@ Pour finir notre analyse, nous avons réalisé un histogramme permettant d'obser
 La conclusion sur notre analyse est donc que l'évolution de taux d'émissions de CO2 par pays est corrélé avec la consommation d'énergie de chaque pays ainsi que l'évolution de leur population.
 
 ## Copyright
-Nous déclarons sur l’honneur que le code fourni a été produit par nous même.
+*Nous déclarons sur l’honneur que le code fourni a été produit par nous même.*
 
 ## Documentations utilisées
 - Dash :    https://dash.plotly.com/ 
