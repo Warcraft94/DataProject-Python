@@ -2,16 +2,16 @@
 #           Ce fichier contient les variables de configuration du projet             #
 ######################################################################################
 
-# Lancer l'application en mode debug
+# Lancer l'application en mode debug.
 DASH_DEBUG_MODE = True
 
-# Paths vers les fichiers de données
+# Paths vers les fichiers de données.
 DATAS_BASE_PATH = "data"
 DATAS_RAW_PATH = f"{DATAS_BASE_PATH}/raw"
 DATAS_CLEANED_PATH = f"{DATAS_BASE_PATH}/cleaned"
 
-# Noms des fichiers de données
-DATA_RAW_NAME = "energy.csv" # TODO: surement a changer pour un zip
+# Noms des fichiers de données.
+DATA_RAW_NAME = "energy.csv"
 DATA_CLEANED_NAME = "cleaned_energy.csv"
 GEOJSON_RAW_NAME = "countries.geo.json"
 GEOJSON_CLEANED_NAME = "cleaned_countries.geo.json"
@@ -19,7 +19,7 @@ GEOJSON_CLEANED_NAME = "cleaned_countries.geo.json"
 ################################################################
 ############### REGLES DE NETTOYAGE DES DONNEES ################
 ################################################################
-# Noms des pays à mapper pour correspondre aux noms utilisés dans le fichier de données
+# Noms des pays à mapper pour correspondre aux noms utilisés dans le fichier de données.
 MAPPED_COUNTRIES_NAMES = {
     "United States of America" : "United States",
     "Republic of Congo" : "Congo-Brazzaville",
@@ -29,13 +29,13 @@ MAPPED_COUNTRIES_NAMES = {
     "Republic of Serbia" : "Former Serbia and Montenegro"
 }
 
-# Colonnes à supprimer du fichier de données car inutiles pour l'application
+# Colonnes à supprimer du fichier de données car inutiles pour l'application.
 DATA_COLUMNS_TO_REMOVE = ["GDP", "Energy_intensity_per_capita", "Energy_intensity_by_GDP", "Energy_production"]
 
-# Colonnes à convertir en numériques dans le fichier de données
+# Colonnes à convertir en numériques dans le fichier de données.
 DATA_COLUMNS_TO_CONVERT_INTO_NUMERICS = ["CO2_emission", "Energy_consumption"]
 
-# Noms des types d'énergies à mapper pour la version française
+# Noms des types d'énergies à mapper pour la version française.
 MAPPED_ENERGY_TYPES = {
     "coal" : "Charbon",
     "natural_gas" : "Gaz naturels",

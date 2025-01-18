@@ -2,13 +2,10 @@ from dash import html
 
 def create_header() -> html.Header:
     """
-    Crée le header de l'application
-
-    Args:
-        years (list): Liste des années disponibles
+    Crée le header de l'application.
     
     Returns:
-        html.Header: Header de l'application
+        html.Header: Header de l'application.
     """
 
     return html.Header(
