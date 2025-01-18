@@ -36,14 +36,15 @@ Nous avons choisi de parler de l'environnement et plus particulièrement de l'é
 ## Analyse qualité du code
 Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et *mypy*, trois bibliothèques Python pour analyser la qualité du code selon différents critères.
 
-**Radon**
+1. **Radon**
     - [Radon](https://radon.readthedocs.io/en/latest/) est un outil permettant d'évaluer la qualité du code d'un projet en mesurant la complexité et la maintenabilité selon plusieurs critères.
-    - Faites la commande ci-dessous pour exécuter Radon :
+    - Pour lancer l'analyse avec Radon, exécutez la commande ci-dessous :
         -     python -m radon mi .
         - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
-
-    ![Résultats de la maintenabilité du code](https://raw.githubusercontent.com/ton-username/repository-name/main/images/radon_maintainability_test.png)
-    <p align="center"><em>Figure 2 - Résultats de la maintenabilité du code avec Radon.</em></p>
+<div style="text-align: center;">
+    <img src="/images/radon_maintainability_test.png" alt="Résultats de la maintenabilité du code">
+    <p><em>Figure 2 - Résultats de la maintenabilité du code avec Radon.</em></p>
+</div>
 
 <br>
 
