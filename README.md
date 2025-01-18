@@ -16,17 +16,28 @@ Nous avons donc choisi de parler de l'environnement et plus particulièrement de
 -     git clone https://github.com/Warcraft94/DataProject-Python
 2. À la racine du projet, faites la commande suivante pour installer les dépendances :
 -     python -m pip install -r requirements.txt
+3. Pour configurer l'API Kaggle, vous devez tout d'abord vous crée un compte sur Kaggle et crée un token. Pour cela :
+- Rendez-vous sur [Kaggle](https://www.kaggle.com/) et créer vous un compte.
+- Ensuite rendez-vous dans votre Profil puis dans Paramètres.
+- Ici, vous devez cliquer sur "*Créer un token*" et puis placer le fichier "*kaggle.json*" contenant votre token dans le répertoire "*~/.kaggle/kaggle.json*" sous Linux, et dans "*C:\Users\<Windows-username>\.kaggle\kaggle.json*" pour Windows.
+4. Puis exécuter la commande suivant pour lancer l'application :
+-     python main.py
+5. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
+- TODO:image
+=======
 3. Ensuite pour configurer l'API Kaggle, vous devez tout d'abord vous crée un compte sur Kaggle et crée un token :
 - Rendez-vous sur [Kaggle](https://www.kaggle.com/) et créez-vous un compte.
 - Ensuite rendez-vous dans votre "*Profil*" > "*Paramètres*" puis cliquez sur le bouton "*Créer un token*" qui vous téléchargera un fichier "*kaggle.json*" contenant votre token.
-- Avec ce fichier "*kaggle.json*" placer le dans le répertoire "*~/.kaggle/kaggle.json*" sous Linux ou bien dans le répertoire  "*C:\Users\<Windows-username>\.kaggle\kaggle.json*" sous Windows.
+- Avec ce fichier "*kaggle.json*" placer le dans le répertoire "*~/.kaggle/kaggle.json*" sous Linux ou bien dans le répertoire  "*C:\Users\<Windows-username>\\.kaggle\kaggle.json*" sous Windows.
 4. Puis exécuter la commande suivante pour lancer l'application :
 -     python main.py
 5. Patientez quelques instants puis vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
 TODO:image
 
-#### Analyse du code
-.
+## Analyse qualité du code
+radon
+ruff
+mypi
 
 ## Data
 1. **Source des données CSV**
