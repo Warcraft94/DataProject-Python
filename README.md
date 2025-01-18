@@ -50,7 +50,7 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
     - [Ruff](https://docs.astral.sh/ruff//) est un linter et formateur de code Python très rapide, conçu pour détecter les erreurs de style et autres mauvaises pratiques.
     - Pour lancer l'analyse avec Ruff, exécutez la commande ci-dessous :
         -     python -m ruff check .
-<div style="text-align: center;">
+<div align="center">
     <img src="/images/ruff_test.png" alt="Résultats du test ruff">
     <p><em>Figure 3 - Résultats du test de style et mauvaises pratiques après amélioration du code.</em></p>
 </div>
@@ -61,9 +61,9 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
     - [mypy](https://mypy.readthedocs.io/en/stable/) est un outil de vérification statique visant à assurer la cohérence des annotations de typage présentes dans le code.
     - Pour lancer l'analyse avec mypy, exécutez la commande ci-dessous :
         -     python -m mypy .
-<div style="text-align: center;">
+<div align="center">
     <img src="/images/mypy_test.png" alt="Résultats du test mypy">
-    <p><em>Figure 3 - Résultats du test pour les annotations de typage après amélioration du code.</em></p>
+    <p><em>Figure 4 - Résultats du test pour les annotations de typage après amélioration du code.</em></p>
 </div>
 
 ## Data
@@ -135,7 +135,7 @@ flowchart LR
     SimpleDashboard --> create_layout
     SimpleDashboard --> setup_callbacks
 ```
-*Figure 5 - Déroulement du programme principal.*
+<p><em>Figure 5 - Déroulement du programme principal.</em></p>
 
 <br>
 
@@ -166,7 +166,7 @@ classDiagram
 
     SimpleDashboard --> DataObject : Instancie
 ```
-*Figure 6 - Relation entre les deux classes python créées.*
+<p><em>Figure 6 - Relation entre les deux classes python créées.</em></p>
 
 3. **Comment ajouter un graphique ?**
 
