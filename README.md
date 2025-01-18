@@ -168,6 +168,8 @@ classDiagram
 ```
 *Figure 6 - Relation entre les deux classes python créées.*
 
+3. **Architecture du code**
+
 ## Rapport d'analyse
 
 L'objectif de notre projet est de montrer l'évolution des émissions de CO2 à travers le monde de 1980 au plus proche d'aujourd'hui, pour notre cas, jusqu'en 2019 et pourquoi ? : C'est à dire Pourquoi y a-t-il une évolution de l'émission de CO2 dans le Monde ? Quels pays ont les taux les plus importants ? Quel type d'énergie est la plus impliquée ? ..
