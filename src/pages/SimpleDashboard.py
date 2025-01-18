@@ -163,7 +163,7 @@ class SimpleDashboard:
             hovertemplate="<b>%{customdata[0]}</b><br>Emissions CO2: %{x:.2f} <br>Consommation Energie: %{y:.2f} </br>"  # Texte personnalisé de l'info-bulle.
         )
         fig.update_layout(
-            title="Emissions de CO2 par rapport à la consommation d'énergie par pays",   # Titre de la figure.
+            title="Taux d'émissions de CO2 par rapport à la consommation d'énergie par pays",   # Titre de la figure.
             xaxis=dict(
                 title="Energie consommée (en Quad BTU)",  # Titre de l'axe X.
             ),
@@ -206,7 +206,7 @@ class SimpleDashboard:
             names = "Energy_type",
             values = "CO2_emission",
             color_discrete_sequence=['red', 'blue', 'green', 'orange'],
-            title="Emissions de CO2 par énergie",           # Titre de la figure.
+            title="Taux d'émissions de CO2 par énergie",           # Titre de la figure.
         )
         
         # Personnalisation du texte de survol.
@@ -260,7 +260,7 @@ class SimpleDashboard:
 
         # Mise à jour de la mise en page pour les axes et les titres.
         fig.update_layout(
-            title="Evolution de la Population et des Émissions de CO2 par Année",  # Titre de la figure.
+            title="Evolution de la population par rapport à l'évolution des émissions de CO2 par année",  # Titre de la figure.
             xaxis=dict(
                 title="Année",                                      # Titre de l'axe X.
                 tickmode='array',                                   # Mode de ticks personnalisé.
@@ -324,7 +324,7 @@ class SimpleDashboard:
             color_continuous_scale="YlGn",                  # Echelle de couleur.
             range_color=[0, 15000],                         # Min et max de l'échelle de couleur.
             mapbox_style="carto-positron",                  # Style de la Map.
-            zoom=2,                                         # Zoom initial sur la Map.
+            zoom=1,                                         # Zoom initial sur la Map.
             center={"lat": 0, "lon": 0},                    # Centre de la Map.
             title="Carte des émissions de CO2 par pays",    # Titre de la figure.
             hover_data={
@@ -399,7 +399,7 @@ class SimpleDashboard:
             x=[f"{intervals[i]:.2f} - {intervals[i+1]:.2f}" for i in range(len(intervals) - 1)], # Affiche les intervalles sous forme de texte.
             y=country_level,  # Nombre de pays dans chaque intervalle.
             labels={"x": "Intervalle des émissions de CO2", "y": "Nombre de pays"},
-            title="Histogramme du nombre de pays par pallier de taux d'émissions de CO2",
+            title="Nombre de pays par pallier de taux d'émissions de CO2",
         )
         
         # Personnalisation du texte de survol.
