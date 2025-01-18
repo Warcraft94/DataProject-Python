@@ -1,5 +1,5 @@
 # Table des matières
-1. [Présentation du projet](#presentation-du-projet)
+1. [Présentation du projet](#présentation-du-projet)
 2. [User Guide](#user-guide)
 3. [Analyse qualité du code](#analyse-qualité-du-code)
 4. [Data](#data)
@@ -78,7 +78,7 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
         - **Consommation d'énergie** - *La consommation d'énergie pour le type d'énergie spécifique, mesurée en quad Btu.*
         - **Population** - *La population dy pays concerné, mesurée en Mpersonne.*
         - **Emission de CO2** - *L'émission de CO2 de la donnée, mesurée en MMtonnes CO2.*
-*Les données recouvrent une période allant de **1980** à **2019**.*
+    *Les données recouvrent une période allant de **1980** à **2019**.*
 
 2. **Source des données GEOJSON**
     - Les données géographiques utilisées pour tracer la carte choroplèthe proviennent de ce dépôt [Github](https://github.com/johan/world.geo.json/blob/master/countries.geo.json).
