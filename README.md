@@ -22,6 +22,7 @@ Nous avons choisi de parler de l'environnement et plus particulièrement de l'é
     - Ensuite rendez-vous dans votre "*Profil*" > "*Paramètres*" puis cliquez sur le bouton "*Créer un token*" qui va lancer un téléchargement d'un fichier json "*kaggle.json*" contenant votre token.
     - Placez ce fichier "*kaggle.json*" dans le répertoire "*~/.kaggle/kaggle.json*" si vous êtes sous Linux ou bien dans le répertoire  "*C:\Users\<Windows-username>\\.kaggle\kaggle.json*" si vous êtes sous Windows.
 <br>
+
 4. Puis exécutez la commande suivante pour lancer l'application :
     -     python main.py
 5. Patientez quelques instants, vous devriez avoir un affichage similaire indiquant que le serveur a bien été lancé :
