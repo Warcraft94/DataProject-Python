@@ -195,7 +195,7 @@ Pour ce faire, nous avons regrouper les données sous forme de différents graph
 
 Dans un premier temps, nous avons développé une carte choroplèthe permettant de voir les pays émettants le plus de CO2 ainsi que leur population totale.
 
-<img src="images/graph1.png" alt="Carte choroplèthe" width="500" height="200">
+<img src="images/graph1.jpg" alt="Carte choroplèthe" width="500" height="200">
 
 <em>Figure 9 - Carte des émissions de CO2 par Pays.</em>
 
@@ -207,7 +207,7 @@ Mais elle nous a aussi permis d'observer le cas contraire avec l'Inde qui est pl
 
 Pour préciser l'idée d'une corrélation entre la population et les émissions de CO2, nous avons développé un histogramme double permettant de comparer l'évolution de la population à l'évolution de l'émission de CO2 au fil des années.
 
-<img src="images/graph2.png" alt="Double histogramme" width="500" height="200">
+<img src="images/graph2.jpg" alt="Double histogramme" width="500" height="200">
 
 <em>Figure 10 - Evolution de la population par rapport à l'évolution des émissions de CO2 par année.</em>
 
@@ -219,7 +219,7 @@ Nous nous sommes alors penché sur le rapport entre l'énergie consommée par pa
 
 Nous avons développé un graphique en nuage de points représentant donc les pays situés par rapport à leur consommation d'énergie et leur taux d'émissions de CO2.
 
-<img src="images/graph3.png" alt="Nuage de points" width="500" height="200">
+<img src="images/graph3.jpg" alt="Nuage de points" width="500" height="200">
 
 <em>Figure 11 - Taux d'émissions de CO2 par rapport à la consommation d'énergie par pays.</em>
 
@@ -231,7 +231,7 @@ Après avoir déterminé que le taux d'émissions de CO2 était corrélé à la 
 
 Nous avons réalisé un graphique circulaire affichant chaque type d'énergie ainsi que leur taux d'émission de CO2 pour le Monde.
 
-<img src="images/graph4.png" alt="Graphique circulaire" width="500" height="200">
+<img src="images/graph4.jpg" alt="Graphique circulaire" width="500" height="200">
 
 <em>Figure 12 - Taux d'émissions de CO2 par énergie.</em>
 
@@ -241,7 +241,7 @@ Celui-ci nous a montré que l'énergie responsable du plus grand taux d'émissio
 
 Pour finir notre analyse, nous avons réalisé un histogramme permettant d'observer le nombre de pays par intervalles de taux d'émissions de CO2 afin de voir la distribution des pays selon leur niveau d'émissions et identifier les intervalles où la majorité des pays se trouvent pour avoir ainsi une vue d'ensemble des tendances globales en des taux d'émissions de CO2.
 
-<img src="images/graph5.png" alt="Histogramme" width="500" height="200">
+<img src="images/graph5.jpg" alt="Histogramme" width="500" height="200">
 
 <em>Figure 13 - Nombre de pays par pallier de taux d'émissions de CO2.</em>
 
