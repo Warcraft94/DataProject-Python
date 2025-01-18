@@ -38,7 +38,7 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
         -     python -m radon mi .
         - Avec comme options : "*cc*" pour la complexité, "*mi*" pour la maintenabilité et "*raw*" pour les mesures brutes.
     
-    ![Résultats de la maintenabilité du code](/images/radon_maintainability.png)
+    ![Résultats de la maintenabilité du code](/images/radon_maintainability_test.png)
     *Figure 2 - Résultats de la maintenabilité du code avec Radon.*
 <br>
 
@@ -83,81 +83,127 @@ Lors de la réalisation de notre projet, nous avons utilisé *Radon*, *Ruff*, et
     - Concernant les données GeoJSON, nous avons simplement réalisé un mappage pour harmoniser certains noms de pays avec ceux utilisés dans le fichier CSV.
 
 ## Developer Guide
-Temporaire
+
+1. **Structure du projet**
+```
+DataProject-Python/
+├── assets/
+├── data/
+├── images/
+├── src/
+│   └── components/
+│       ├── __init__.py
+│       ├── footer.py
+│       └── header.py
+│   └── pages/
+│       ├── __init__.py
+│       └── SimpleDashboard.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── clean_data.py
+│       ├── common_functions.py
+│       ├── DataObject.py
+│       └── get_data.py
+├── .gitignore
+├── config.py
+├── main.py
+├── mypy.ini
+├── README.md
+└── requirements.txt
+```
+<br>
+
+2. **Architecture du code**
 ```mermaid
 flowchart LR
+    start --> get_data
+    start --> clean_geojson
+    start --> clean_data
+    start --> load_data
+    start -- Instancie--> Dash
+    start -- Instancie --> SimpleDashboard
 
-A[Hard] -->|Text| B(Round)
-B --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
+    SimpleDashboard --> initSimpleDashBoard[init]
+    SimpleDashboard -- Instancie --> DataObject
+    SimpleDashboard --> create_layout
+    SimpleDashboard --> setup_callbacks
+```
+
+<br>
+
+```mermaid
+classDiagram
+    class SimpleDashboard{
+        +DataObject data
+        +dict balgeojson_dataance
+        +ndarray years
+
+        +create_layout() html.Div
+        +setup_callbacks(Dash : app) None
+        +create_scatter_plot(selected_year : int) Figure
+        +create_pie_plot(selected_year : int) Figure
+        +create_double_histogram_plot() Figure
+        +create_choropleth_map(selected_year : int) Figure
+        +create_histogram_plot(selected_year: int) Figure
+    }
+
+    class DataObject{
+        +DataFrame energy_data
+        +dict energy_data_per_year
+
+        +get_data(*columns : str, year : int) DataFrame
+        +get_data_per_country(country : str, *columns : str, year : int) DataFrame
+        +get_mask(col : DataFrame, mask : str) Series
+    }
+
+    SimpleDashboard --> DataObject : Instancie
+
 ```
 
 ## Rapport d'analyse
 
-L'objectif de notre projet est de montrer l'évolution des émissions de CO2 à travers le monde de 1980 au plus<br>
-proche d'aujourd'hui, pour notre cas, jusqu'en 2019 et pourquoi ? : C'est à dire Pourquoi y a-t-il une évolution<br>
-de l'émission de CO2 dans le Monde ? Quels pays ont les taux les plus importants ? Quel type d'énergie est la<br>
-plus impliquée ? ..
+L'objectif de notre projet est de montrer l'évolution des émissions de CO2 à travers le monde de 1980 au plus proche d'aujourd'hui, pour notre cas, jusqu'en 2019 et pourquoi ? : C'est à dire Pourquoi y a-t-il une évolution de l'émission de CO2 dans le Monde ? Quels pays ont les taux les plus importants ? Quel type d'énergie est la plus impliquée ? ..
 
-Pour ce faire, nous avons regrouper les données sous forme de différents graphiques permettant d'analyser les<br>
-différentes données et de voir les corrélations.
+Pour ce faire, nous avons regrouper les données sous forme de différents graphiques permettant d'analyser les différentes données et de voir les corrélations.
 
-Dans un premier temps, nous avons développé une carte choroplèthe permettant de voir les pays émettants le plus<br>
-de CO2 ainsi que leur population totale.
+Dans un premier temps, nous avons développé une carte choroplèthe permettant de voir les pays émettants le plus de CO2 ainsi que leur population totale.
 
 <img src="images/Graph5.png" alt="Carte choroplèthe" width="500" height="200">
 
-Celle-ci nous a permis d'observer que certains des pays les plus peuplés étaient aussi ceux qui émettaient le<br>
-plus de CO2 en 2019, ici la Chine et les Etats Unis.
+Celle-ci nous a permis d'observer que certains des pays les plus peuplés étaient aussi ceux qui émettaient le plus de CO2 en 2019, ici la Chine et les Etats Unis.
 
-Mais elle nous a aussi permis d'observer le cas contraire avec l'Inde qui est plus peuplé que les Etats Unis<br>
-mais émet deux fois moins de CO2.
+Mais elle nous a aussi permis d'observer le cas contraire avec l'Inde qui est plus peuplé que les Etats Unis mais émet deux fois moins de CO2.
 
-Pour préciser l'idée d'une corrélation entre la population et les émissions de CO2, nous avons développé un<br>
-histogramme double permettant de comparer l'évolution de la population à l'évolution de l'émission de CO2 au fil des<br>
-années.
+Pour préciser l'idée d'une corrélation entre la population et les émissions de CO2, nous avons développé un histogramme double permettant de comparer l'évolution de la population à l'évolution de l'émission de CO2 au fil des années.
 
 <img src="images/Graph3.png" alt="Double histogramme" width="500" height="200">
 
-Cet histogramme nous a permis de voir qu'il semble y avoir une certaine corrélation entre l'évolution de la<br>
-population et les émissions de CO2, mais que ce n'est pas le seul facteur responsable de l'évolution du taux de<br>
-CO2 émis.
+Cet histogramme nous a permis de voir qu'il semble y avoir une certaine corrélation entre l'évolution de la population et les émissions de CO2, mais que ce n'est pas le seul facteur responsable de l'évolution du taux de CO2 émis.
 
-Nous nous sommes alors penché sur le rapport entre l'énergie consommée par pays et le taux d'émissions de CO2<br>
-émis par ces mêmes pays.
+Nous nous sommes alors penché sur le rapport entre l'énergie consommée par pays et le taux d'émissions de CO2 émis par ces mêmes pays.
 
-Nous avons développé un graphique en nuage de points représentant donc les pays situés par rapport à leur<br>
-consommation d'énergie et leur taux d'émissions de CO2.
+Nous avons développé un graphique en nuage de points représentant donc les pays situés par rapport à leur consommation d'énergie et leur taux d'émissions de CO2.
 
 <img src="images/Graph1.png" alt="Nuage de points" width="500" height="200">
 
-Ce graphique en nuage de points nous a bien révélé une corrélation entre l'émission de CO2 et la consommation<br>
-d'énergie en 2019, dessinant presque une diagonale pour cette relation.
+Ce graphique en nuage de points nous a bien révélé une corrélation entre l'émission de CO2 et la consommation d'énergie en 2019, dessinant presque une diagonale pour cette relation.
 
-Après avoir déterminé que le taux d'émissions de CO2 était corrélé à la consommation d'énergie ainsi qu'en<br>
-partie à l'évolution de la population, nous avons cherché à savoir quelle énergie était responsable du plus<br>
+Après avoir déterminé que le taux d'émissions de CO2 était corrélé à la consommation d'énergie ainsi qu'en partie à l'évolution de la population, nous avons cherché à savoir quelle énergie était responsable du plus<br>
 grand taux d'émission de CO2. 
 
-Nous avons réalisé un graphique circulaire affichant chaque type d'énergie ainsi que leur taux d'émission de CO2<br>
-pour le Monde.
+Nous avons réalisé un graphique circulaire affichant chaque type d'énergie ainsi que leur taux d'émission de CO2 pour le Monde.
 
 <img src="images/Graph2.png" alt="Graphique circulaire" width="500" height="200">
 
-Celui-ci nous a montré que l'énergie responsable du plus grand taux d'émissions dans le Monde en 2019 était le<br>
-charbon.
+Celui-ci nous a montré que l'énergie responsable du plus grand taux d'émissions dans le Monde en 2019 était le charbon.
 
-Pour finir notre analyse, nous avons réalisé un histogramme permettant d'observer le nombre de pays par<br>
-intervalles de taux d'émissions de CO2 afin de voir la distribution des pays selon leur niveau d'émissions et<br>
-identifier les intervalles où la majorité des pays se trouvent pour avoir ainsi une vue d'ensemble des tendances<br>
-globales en des taux d'émissions de CO2.
+Pour finir notre analyse, nous avons réalisé un histogramme permettant d'observer le nombre de pays par intervalles de taux d'émissions de CO2 afin de voir la distribution des pays selon leur niveau d'émissions et identifier les intervalles où la majorité des pays se trouvent pour avoir ainsi une vue d'ensemble des tendances globales en des taux d'émissions de CO2.
 
 <img src="images/Graph4.png" alt="Histogramme" width="500" height="200">
 
 ### Conclusion 
 
-La conclusion sur notre analyse est donc que l'évolution de taux d'émissions de CO2 par pays est corrélé avec la<br>
-consommation d'énergie de chaque pays ainsi que l'évolution de leur population.
+La conclusion sur notre analyse est donc que l'évolution de taux d'émissions de CO2 par pays est corrélé avec la consommation d'énergie de chaque pays ainsi que l'évolution de leur population.
 
 ## Copyright
 Nous déclarons sur l’honneur que le code fourni a été produit par nous même.
