@@ -177,11 +177,12 @@ classDiagram
     - Pour ajouter un nouveau graphique, il faut :
         - Dans un premier temps, créer une fonction dans SimpleDashboard qui créer un graphique, le configure et renvoit l'objet Figure.
         - Ensuite, se déplacer dans la fonction create_layout de la classe SimpleDashboard et ajouter un nouveau Tab à l'instar des lignes précédentes dans l'image ci-dessous et mettre en paramètre ```tabn+1``` par rapport au précédent.
-        - Enfin, il faut se déplacer dans la fonction setup_callbacks de la classe SimpleDashboard et ajouter une condition pour le nouveau tabn+1 ajouté en recopiant les conditions dans l'image ci-dessous.
+        - Enfin, il faut se déplacer dans la fonction setup_callbacks de la classe SimpleDashboard et ajouter une condition pour le nouveau ```tabn+1``` ajouté en recopiant les conditions dans l'image ci-dessous.
 
         <img src="/images/AddGraph1.PNG" alt="Image 1 créer un graphique">
         <em>Figure 7 - create_layout dans SimpleDashboard.</em>
-<br>
+        <br>
+        <br>
         <img src="/images/AddGraph2.PNG" alt="Image 2 créer un graphique">
         <em>Figure 8 - setup_callbacks dans SimpleDashboard.</em>
 
